@@ -19,6 +19,11 @@ describe "String Extensions" do
     input.to_absolute_url('http://www.google.com').should eql('http://www.google.com/Test_Automation_Framework/chrome/common/js/trac.js')
   end
 
+  it "should remove any relative path from original url" do
+    input = '/foo/trac.js'
+    input.to_absolute_url('http://www.google.com/something/index.html').should eql('http://www.google.com/foo/trac.js')
+  end
+
   it "should do nothing to absolute urls" do
     input = 'http://www.apple.com'
     input.to_absolute_url('http://www.google.com').should eql('http://www.apple.com')

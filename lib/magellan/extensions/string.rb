@@ -12,7 +12,7 @@ class String
     if self.starts_with?('http://')
       self
     else
-      origin_url + self
+      origin_url[/http:\/\/[^\/]*/] + self
     end
   end
 end
