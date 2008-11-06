@@ -9,6 +9,10 @@ class String
   end
   
   def to_absolute_url(origin_url)
-    origin_url + self
+    if self.starts_with?('http://')
+      self
+    else
+      origin_url + self
+    end
   end
 end
