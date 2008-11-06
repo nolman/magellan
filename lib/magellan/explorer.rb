@@ -10,7 +10,6 @@ module Magellan
   end
 end
 
-# 
 # proxy_addr = '10.8.77.100'
 # proxy_port = 8080
 # url = URI.parse('http://www.google.com/')

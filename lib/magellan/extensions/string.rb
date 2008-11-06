@@ -7,4 +7,8 @@ class String
     end
     matches
   end
+  
+  def to_absolute_url(origin_url)
+    origin_url + self
+  end
 end
