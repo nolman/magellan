@@ -1,0 +1,7 @@
+what to follow:
+ - a href
+ - img src
+ - script src
+- <style media="all" type="text/css">
+@import "/css/151/global.css";
+</style>
