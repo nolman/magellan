@@ -10,9 +10,6 @@ module Magellan
   end
 end
 
-class String
-  
-end
 # 
 # proxy_addr = '10.8.77.100'
 # proxy_port = 8080
