@@ -11,7 +11,12 @@ describe "String Extensions" do
 
   it "should get all src links out of a string" do
     input = ' <script type="text/javascript" src="/Test_Automation_Framework/chrome/common/js/trac.js"></script></head><body>'
-    input.links.should include('/Test_Automation_Framework/chrome/common/js/trac.js')
+    input.links.should include('/test_automation_framework/chrome/common/js/trac.js')
+  end
+
+  it "should not care about case when it looks for links" do
+    input = ' <script type="text/javascript" SRC="/Test_Automation_Framework/chrome/common/js/trac.js"></script></head><body>'
+    input.links.should include('/test_automation_framework/chrome/common/js/trac.js')
   end
 
   it "should convert relative urls to absolute" do

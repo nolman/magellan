@@ -3,7 +3,7 @@ class String
     patterns = [/href\s*=\s*"*([^\s"]*)/,/src\s*=\s*"*([^\s"]*)/]
     matches = []
     patterns.each do |pattern| 
-      matches += self.scan(pattern).map {|result| result.first} 
+      matches += self.downcase.scan(pattern).map {|result| result.first} 
     end
     matches
   end

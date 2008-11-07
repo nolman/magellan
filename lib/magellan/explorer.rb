@@ -2,18 +2,28 @@ require 'net/http'
 
 module Magellan
   class Explorer
-    def initialize()
+    def initialize(url, &block)
+      @url=url
+      @block=block
     end
     def explore
-      
-    end    
+      response = web_response
+      @block.call(response,response.body.links)
+    end
+    
+    def web_response
+      #TODO: fix proxy support
+      proxy_addr = '10.8.77.100'
+      proxy_port = 8080
+      puts "url#{@url}"
+      url = URI.parse(@url)
+      puts url
+      req = Net::HTTP::Get.new(url.path)
+      res = Net::HTTP::Proxy(proxy_addr, proxy_port).start(@url) {|http|
+        http.request(req)
+      }
+      puts res.body
+      res
+    end
   end
 end
-
-# proxy_addr = '10.8.77.100'
-# proxy_port = 8080
-# url = URI.parse('http://www.google.com/')
-# req = Net::HTTP::Get.new(url.path)
-# res = Net::HTTP::Proxy(proxy_addr, proxy_port).start('www.google.com') {|http|
-#   http.request(req)
-# }
