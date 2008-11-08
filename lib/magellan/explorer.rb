@@ -16,13 +16,10 @@ module Magellan
     
     def web_response
       #TODO: fix proxy support
-      proxy_addr = '10.8.77.100'
-      proxy_port = 8080
       url = URI.parse("http://#{@url}")
-      puts url
       req = Net::HTTP::Get.new(url.path)
       res = nil
-      Net::HTTP::Proxy(proxy_addr, proxy_port).start(@url) {|http|
+      Net::HTTP.start(url.host,url.port) {|http|
         res = http.request(req)
       }
       res
