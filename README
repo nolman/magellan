@@ -1,6 +1,9 @@
-what to follow:
+Magellan: (Still in pre-release)
+
+A tool that will explore your site, building a map of how your site is structured and the http response codes returned by each request.
+
+what to explore:
+ - anchor href's
  - img src
  - script src
-- <style media="all" type="text/css">
-@import "/css/151/global.css";
-</style>
+ - style import
