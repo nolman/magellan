@@ -26,8 +26,15 @@ describe Magellan::Cartographer do
     cartographer.crawl
   end
 
-  it "should be able to plot a entire site"
-  it "should go n layers deep into a site"
+  it "should go n layers deep into a site" do 
+    origin_url = "http://www.google.com"
+    Magellan::Explorer.any_instance.expects(:explore).once.with(origin_url.to_uri).returns(create_success_result(['http://www.google.com/foo.html']))
+    Magellan::Explorer.any_instance.expects(:explore).once.with('http://www.google.com/foo.html'.to_uri).returns(create_success_result(['http://www.google.com/foo2.html']))
+    Magellan::Explorer.any_instance.expects(:explore).once.with('http://www.google.com/foo2.html'.to_uri).returns(create_success_result(['http://www.google.com/foo3.html']))
+    cartographer = Magellan::Cartographer.new(origin_url, ['http://www.google.com'],3)
+    cartographer.crawl    
+  end
+  
   it "should go through a entire site if layers to explore is set to -1"
   it "should explore n layers into external domains"
   it "build a representation of pages and what they link to and the status of those links"
