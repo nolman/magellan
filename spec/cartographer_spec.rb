@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/spec_helper'
 require 'magellan'
 
 describe Magellan::Cartographer do
-  #general todo's not everything belongs in the cartographer
+
   it "should not visit the same url more then once" do
     origin_url = "www.google.com"
     Magellan::Explorer.any_instance.expects(:explore).once.with(origin_url).returns(create_success_result(['www.google.com']))
@@ -10,6 +10,13 @@ describe Magellan::Cartographer do
     cartographer.crawl
   end
 
+  it "should explorer other linked resources" do
+    origin_url = "www.google.com"
+    Magellan::Explorer.any_instance.expects(:explore).with(origin_url).returns(create_success_result(['www.foo.com']))
+    Magellan::Explorer.any_instance.expects(:explore).with('www.foo.com').returns(create_success_result([]))
+    cartographer = Magellan::Cartographer.new(origin_url)
+    cartographer.crawl
+  end
 
   it "should be able to plot a entire site"
   it "should go n layers deep into a site"
