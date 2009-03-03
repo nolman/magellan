@@ -23,7 +23,6 @@ describe Magellan::Cartographer do
   it "should go through a entire site if layers to explore is set to -1"
   it "should explore n layers into external domains"
   it "should be able to specify crawlable domains"
-  it "should report all 404's and the page they were linked from"
   it "build a representation of pages and what they link to and the status of those links"
   
   def create_success_result(uris)

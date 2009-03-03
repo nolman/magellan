@@ -1,5 +1,6 @@
 module Magellan
   class Cartographer
+
     def initialize(origin_url)
       @origin_url = origin_url
       @known_urls = {}
@@ -18,5 +19,6 @@ module Magellan
         end
       end
     end
+
   end
 end
