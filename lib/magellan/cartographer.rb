@@ -1,9 +1,10 @@
 module Magellan
   class Cartographer
 
-    def initialize(origin_url)
-      @origin_url = origin_url
+    def initialize(origin_url, domains = [origin_url])
+      @origin_url = URI.parse(origin_url)
       @known_urls = {}
+      @domains = domains.map {|domain| URI.parse(domain).host}
     end
 
     def crawl
@@ -11,7 +12,7 @@ module Magellan
     end
 
     def recursive_explore(url)
-      if !@known_urls.include?(url)
+      if should_crawl_this_url?(url)
         result = Explorer.new.explore(url)
         @known_urls[url] = nil
         result.linked_resources.each do |linked_resource|
@@ -20,5 +21,12 @@ module Magellan
       end
     end
 
+    def should_crawl_this_url?(uri)
+      !@known_urls.include?(uri) && a_domain_we_care_about?(uri)
+    end
+
+    def a_domain_we_care_about?(uri)
+      @domains.include?(uri.host)
+    end
   end
 end

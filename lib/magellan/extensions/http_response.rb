@@ -1,6 +1,6 @@
 require 'net/http'
 class Net::HTTPResponse
   def linked_resources
-    body.links
+    body.links.collect { |link| URI.parse(link) }
   end
 end
