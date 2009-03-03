@@ -1,7 +1,7 @@
 module Magellan
   class Cartographer
 
-    def initialize(origin_url, domains = [origin_url], depth_to_explore = 5)
+    def initialize(origin_url, depth_to_explore = 5, domains = [origin_url])
       @origin_url = URI.parse(origin_url)
       @known_urls = {}
       @domains = domains.map {|domain| URI.parse(domain).host}

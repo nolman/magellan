@@ -22,7 +22,7 @@ describe Magellan::Cartographer do
     origin_url = "http://www.google.com"
     Magellan::Explorer.any_instance.expects(:explore).once.with(origin_url.to_uri).returns(create_success_result(['http://www.foo.com']))
     Magellan::Explorer.any_instance.expects(:explore).once.with('http://www.foo.com'.to_uri).returns(create_success_result(['http://www.bar.com']))
-    cartographer = Magellan::Cartographer.new(origin_url, ['http://www.google.com','http://www.foo.com'])
+    cartographer = Magellan::Cartographer.new(origin_url, 5,['http://www.google.com','http://www.foo.com'])
     cartographer.crawl
   end
 
@@ -31,13 +31,12 @@ describe Magellan::Cartographer do
     Magellan::Explorer.any_instance.expects(:explore).once.with(origin_url.to_uri).returns(create_success_result(['http://www.google.com/foo.html']))
     Magellan::Explorer.any_instance.expects(:explore).once.with('http://www.google.com/foo.html'.to_uri).returns(create_success_result(['http://www.google.com/foo2.html']))
     Magellan::Explorer.any_instance.expects(:explore).once.with('http://www.google.com/foo2.html'.to_uri).returns(create_success_result(['http://www.google.com/foo3.html']))
-    cartographer = Magellan::Cartographer.new(origin_url, ['http://www.google.com'],3)
+    cartographer = Magellan::Cartographer.new(origin_url,3)
     cartographer.crawl    
   end
   
   it "should go through a entire site if layers to explore is set to -1"
   it "should explore n layers into external domains"
-  it "build a representation of pages and what they link to and the status of those links"
 
   def create_success_result(uris)
     parsed_uris = uris.collect { |uri| URI.parse(uri)}
