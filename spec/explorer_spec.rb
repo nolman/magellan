@@ -18,4 +18,9 @@ describe Magellan::Explorer do
     result.linked_resources.should include('http://www.google.com/intl/en/about.html')
   end
 
+  it "should report non successful status codes" do
+    result = Magellan::Explorer.new.explore('http://www.google.com/dfkjaslfkjaslfkj.html')
+    result.status_code.should eql("404")
+  end
+
 end
