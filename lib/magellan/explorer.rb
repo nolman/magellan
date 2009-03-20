@@ -7,7 +7,7 @@ module Magellan
       begin
         response = open(url)
         doc = Hpricot(response)
-        Result.new(url,"200",doc.links_to_other_documents)
+        Result.new(url,response.status.first,doc.links_to_other_documents)
       rescue OpenURI::HTTPError => the_error
         Result.new(url,the_error.io.status.first,[])
       end
