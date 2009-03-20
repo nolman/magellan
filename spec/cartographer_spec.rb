@@ -35,6 +35,12 @@ describe Magellan::Cartographer do
     cartographer.crawl    
   end
   
+  it "should fo" do
+    url = "http://localhost:3000/"
+    cartographer = Magellan::Cartographer.new(url,3)
+    cartographer.crawl    
+  end
+  
   it "should go through a entire site if layers to explore is set to -1"
   it "should explore n layers into external domains"
 
