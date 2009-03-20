@@ -1,9 +1,7 @@
 $:.unshift(File.join(File.dirname(__FILE__), 'lib'))
-
-require 'rubygems'
-require 'spec/rake/spectask'
 require 'magellan'
 require 'config/vendorized_gems'
+require 'spec/rake/spectask'
 require 'magellan/rake/magellan_task'
 
 Spec::Rake::SpecTask.new do |t|
