@@ -1,13 +1,14 @@
-require 'net/http'
-require 'magellan/extensions/string'
-require 'magellan/extensions/http_response'
+require 'hpricot'
+require 'open-uri'
 
 module Magellan
   class Explorer
     def explore(url)
-      response = web_response(url)
-      Result.new(response.code,response.linked_resources)
+      response = open(url)
+      doc = Hpricot(response)
+      Result.new(url,"200",doc.links_to_other_documents)
     end
+    
     def web_response(uri)
       #TODO: fix proxy support
       req = Net::HTTP::Get.new(uri.path)

@@ -2,9 +2,9 @@ module Magellan
   class Cartographer
 
     def initialize(origin_url, depth_to_explore = 5, domains = [origin_url])
-      @origin_url = URI.parse(origin_url)
+      @origin_url = origin_url
       @known_urls = {}
-      @domains = domains.map {|domain| URI.parse(domain).host}
+      @domains = domains
       @depth_to_explore = depth_to_explore
     end
 
@@ -22,20 +22,20 @@ module Magellan
       end
     end
 
-    def should_crawl_this_url?(uri)
-      i_have_not_seen_this_url_yet?(uri) && a_domain_we_care_about?(uri)
+    def should_crawl_this_url?(url)
+      i_have_not_seen_this_url_yet?(url) && a_domain_we_care_about?(url)
     end
     
-    def i_have_not_seen_this_url_yet?(uri)
-      !@known_urls.include?(uri)
+    def i_have_not_seen_this_url_yet?(url)
+      !@known_urls.include?(url)
     end
     
     def i_am_not_too_deep?(depth)
       depth <= @depth_to_explore
     end
 
-    def a_domain_we_care_about?(uri)
-      @domains.include?(uri.host)
+    def a_domain_we_care_about?(url)
+      !@domains.select { |domain| url.starts_with?(domain) }.empty?
     end
   end
 end

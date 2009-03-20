@@ -3,11 +3,19 @@ require 'magellan'
 
 describe Magellan::Explorer do
 
-  it "explorer should call back with the status code and other links to explore" do
-    result = Magellan::Explorer.new.explore(URI.parse('http://canrailsscale.com/'))
-    found = result.linked_resources.select { |uri| uri.to_s == 'http://pagead2.googlesyndication.com/pagead/show_ads.js'}
-    (found.size == 1).should be_true
-    result.status_code.should eql('200')
+  it "should find other js resources" do
+    result = Magellan::Explorer.new.explore('http://canrailsscale.com/')
+    result.linked_resources.should include('http://pagead2.googlesyndication.com/pagead/show_ads.js')
+  end
+
+  it "should find other pages to explore via a href" do
+    result = Magellan::Explorer.new.explore('http://www.google.com/')
+    result.linked_resources.should include('http://video.google.com/?hl=en&tab=wv')
+  end
+
+  it "should translate relative urls to absolute ones" do
+    result = Magellan::Explorer.new.explore('http://www.google.com/')
+    result.linked_resources.should include('http://www.google.com/intl/en/about.html')
   end
 
 end
