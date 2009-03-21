@@ -1,9 +1,8 @@
-Magellan: (Still in pre-release)
+Magellan: (alpha)
 
-A tool that will explore your site, building a map of how your site is structured and the http response codes returned by each request.
+Currently the supported functionality is a rake task that crawl your website and find any broken a[@href], img[@src], or script[@src] links.
 
-what to explore:
- - anchor href's
- - img src
- - script src
- - style import
+Magellan::Rake::Task.new do |t|
+  t.origin_url = "http://localhost:3000/"
+  t.explore_depth = 100
+end
