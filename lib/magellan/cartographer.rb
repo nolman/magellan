@@ -9,7 +9,7 @@ module Magellan
       @origin_url = origin_url
       @known_urls = {}
       @broken_links = []
-      @domains = domains
+      @domains = domains.map {|domain| URI.parse(domain)}
       @depth_to_explore = depth_to_explore
     end
 
@@ -41,7 +41,7 @@ module Magellan
     end
 
     def a_domain_we_care_about?(url)
-      !@domains.select { |domain| url.starts_with?(domain) }.empty?
+      !@domains.select { |domain| URI.parse(url).host == domain.host }.empty?
     end
     
     #this method will likely belong in another class

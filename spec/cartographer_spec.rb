@@ -81,6 +81,12 @@ describe Magellan::Cartographer do
     cartographer.crawl
   end
 
+  it "should use host to determine if we are in a allowed domain" do
+    origin_url = "http://www.google.com/jskfjlsajfd"
+    cartographer = Magellan::Cartographer.new(origin_url)
+    cartographer.a_domain_we_care_about?("http://www.google.com/index.html").should be_true
+  end
+
   it "should go through a entire site if layers to explore is set to -1"
   it "should explore n layers into external domains"
 
