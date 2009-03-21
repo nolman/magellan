@@ -41,7 +41,6 @@ describe "Magellan Tasks" do
   end
 
   def tasks
-    puts  @rake.class
     @rake.tasks.collect{|task| task.name }
   end
 end
