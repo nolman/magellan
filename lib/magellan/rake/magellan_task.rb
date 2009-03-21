@@ -25,6 +25,10 @@ module Magellan
         task @name do
           cartographer = Magellan::Cartographer.new(@origin_url,@explore_depth)
           cartographer.crawl
+          if cartographer.has_broken_links?
+            STDERR.puts cartographer.failure_message
+            raise "#{@name} failed while exploring"
+          end
         end
       end
 

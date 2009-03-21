@@ -22,7 +22,26 @@ describe "Magellan Tasks" do
     tasks.include?("magellan:explore").should be_true
   end
 
+  it "should explore when task is invoked" do
+    Magellan::Rake::Task.new("invoke_task") do |t|
+      t.explore_depth = 1
+      t.origin_url = "http://localhost:8080"
+    end
+    Magellan::Explorer.any_instance.expects(:explore).once.with("http://localhost:8080").returns(Magellan::Result.new("http://localhost:8080","200",[]))
+    @rake.invoke_task("invoke_task")
+  end
+
+  it "should raise exception when broken links are found" do
+    Magellan::Rake::Task.new("exception_task") do |t|
+      t.explore_depth = 1
+      t.origin_url = "http://canrailsscale.com"
+    end
+    Magellan::Explorer.any_instance.expects(:explore).once.with("http://canrailsscale.com").returns(Magellan::Result.new("http://localhost:8080","500",[]))
+    lambda {@rake.invoke_task("exception_task")}.should raise_error
+  end
+
   def tasks
+    puts  @rake.class
     @rake.tasks.collect{|task| task.name }
   end
 end
