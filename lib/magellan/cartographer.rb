@@ -50,11 +50,14 @@ module Magellan
         @broken_links << result
       end
     end
+    
     def has_broken_links?
       !@broken_links.empty?
     end
+    
     def failure_message
-      @broken_links.join('\n')
+      @broken_links.join("\n")
     end
+    
   end
 end
