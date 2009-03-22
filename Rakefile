@@ -18,3 +18,8 @@ Spec::Rake::SpecTask.new(:rcov) do |t|
   t.rcov_opts << '--text-report'
   t.rcov_opts << '--exclude spec'
 end
+
+Magellan::Rake::Task.new do |t|
+  t.origin_url = "http://localhost:3000/"
+  t.explore_depth = 100
+end

@@ -14,16 +14,17 @@ module Magellan
     end
 
     def crawl
-      recursive_explore(@origin_url,1)
+      recursive_explore(@origin_url,@origin_url,1)
     end
     
-    def recursive_explore(url,depth)
+    def recursive_explore(origin_url,url,depth)
       if should_crawl_this_url?(url) && i_am_not_too_deep?(depth)
         result = Explorer.new.explore(url)
+        result.origin_url = origin_url
         @known_urls[url] = nil
         record_link_if_broken(result)
         result.linked_resources.each do |linked_resource|
-          recursive_explore(linked_resource, depth+1)
+          recursive_explore(url,linked_resource, depth+1)
         end
       end
     end

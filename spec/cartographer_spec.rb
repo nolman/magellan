@@ -87,6 +87,16 @@ describe Magellan::Cartographer do
     cartographer.a_domain_we_care_about?("http://www.google.com/index.html").should be_true
   end
 
+  it "should know where a broken link was linked from" do
+    origin_url = "http://www.google.com/jskfjlsajfd"
+    Magellan::Explorer.any_instance.expects(:explore).with(origin_url).returns(Magellan::Result.new(origin_url,"200",['http://www.google.com/foo.html']))
+    Magellan::Explorer.any_instance.expects(:explore).with('http://www.google.com/foo.html').returns(Magellan::Result.new('http://www.google.com/foo.html',"404",[]))
+    cartographer = Magellan::Cartographer.new(origin_url)
+    cartographer.crawl
+    cartographer.has_broken_links?.should be_true
+    cartographer.failure_message.should include(origin_url)
+  end
+
   it "should go through a entire site if layers to explore is set to -1"
   it "should explore n layers into external domains"
 
