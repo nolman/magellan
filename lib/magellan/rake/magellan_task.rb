@@ -22,7 +22,7 @@ module Magellan
 
 
       def define
-        desc "explore #{@origin_url}"
+        desc "explore #{@origin_url} for broken links"
         task @name do
           cartographer = Magellan::Cartographer.new(@origin_url,@explore_depth)
           broken_link_tracker = Magellan::BrokenLinkTracker.new
