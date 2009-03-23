@@ -42,7 +42,7 @@ describe Magellan::Cartographer do
     Magellan::Explorer.any_instance.stubs(:explore_a).with(origin_url).returns(create_result("404",[]))
     cartographer = Magellan::Cartographer.new(origin_url)
     cartographer.crawl
-    cartographer.broken_links.first.origin_url.should eql(origin_url)
+    cartographer.broken_links.first.url.should eql(origin_url)
     cartographer.broken_links.first.status_code.should eql('404')
   end
   
@@ -60,7 +60,7 @@ describe Magellan::Cartographer do
     Magellan::Explorer.any_instance.stubs(:explore_a).with(origin_url).returns(create_result("500",[]))
     cartographer = Magellan::Cartographer.new(origin_url)
     cartographer.crawl
-    cartographer.broken_links.first.origin_url.should eql(origin_url)
+    cartographer.broken_links.first.url.should eql(origin_url)
     cartographer.broken_links.first.status_code.should eql('500')
   end
 
@@ -94,7 +94,7 @@ describe Magellan::Cartographer do
     cartographer = Magellan::Cartographer.new(origin_url)
     cartographer.crawl
     cartographer.has_broken_links?.should be_true
-    cartographer.failure_message.should include(origin_url)
+    cartographer.failure_message.should include('http://www.google.com/foo.html')
   end
   
   it "should go through a entire site if layers to explore is set to -1"

@@ -20,7 +20,7 @@ module Magellan
     def recursive_explore(origin_url,url,depth)
       if should_crawl_this_url?(url) && i_am_not_too_deep?(depth)
         result = Explorer.new(url).explore
-        result.origin_url = origin_url
+        result.url = url
         @known_urls[url] = nil
         record_link_if_broken(result)
         result.linked_resources.each do |linked_resource|
@@ -57,7 +57,7 @@ module Magellan
     end
     
     def failure_message
-      @broken_links.join("\n")
+      @broken_links.map{|broken_link| "#{broken_link.url} returned #{broken_link.status_code}"}.join("\n")
     end
     
   end
