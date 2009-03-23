@@ -53,7 +53,8 @@ describe Magellan::Cartographer do
   
   it "should go through a entire site if layers to explore is set to -1"
   it "should explore n layers into external domains"
-
+  it "should not explore links in js files"
+  
   def create_success_result(linked_resources)
     create_result("200",linked_resources)
   end
