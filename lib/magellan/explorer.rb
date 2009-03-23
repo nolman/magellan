@@ -10,12 +10,12 @@ module Magellan
     end
 
     def explore
-      doit(@url)
+      explore_a(@url)
     end
 
-    def doit(url)
+    def explore_a(url)
       begin
-        response = open(@url)
+        response = open(url)
         doc = Hpricot(response)
         convert_to_absolute_urls(response.status.first, doc.links_to_other_documents)
       rescue OpenURI::HTTPError => the_error

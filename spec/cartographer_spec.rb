@@ -5,14 +5,14 @@ describe Magellan::Cartographer do
 
   it "should not visit the same url more then once" do
     origin_url = "http://www.google.com"
-    Magellan::Explorer.any_instance.expects(:doit).once.with(origin_url).returns(create_success_result(['http://www.google.com']))
+    Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(['http://www.google.com']))
     cartographer = Magellan::Cartographer.new(origin_url)
     cartographer.crawl
   end
 
   it "should not report broken links if there are none" do
     origin_url = "http://www.google.com"
-    Magellan::Explorer.any_instance.stubs(:doit).once.with(origin_url).returns(create_success_result(['http://www.google.com']))
+    Magellan::Explorer.any_instance.stubs(:explore_a).once.with(origin_url).returns(create_success_result(['http://www.google.com']))
     cartographer = Magellan::Cartographer.new(origin_url)
     cartographer.crawl
     cartographer.has_broken_links?.should be_false
@@ -21,16 +21,16 @@ describe Magellan::Cartographer do
 
   it "should explorer other linked resources" do
     origin_url = "http://www.google.com"
-    Magellan::Explorer.any_instance.expects(:doit).with(origin_url).returns(create_success_result(['http://www.google.com/foo.html']))
-    Magellan::Explorer.any_instance.expects(:doit).with('http://www.google.com/foo.html').returns(create_success_result([]))
+    Magellan::Explorer.any_instance.expects(:explore_a).with(origin_url).returns(create_success_result(['http://www.google.com/foo.html']))
+    Magellan::Explorer.any_instance.expects(:explore_a).with('http://www.google.com/foo.html').returns(create_success_result([]))
     cartographer = Magellan::Cartographer.new(origin_url)
     cartographer.crawl
   end
 
   it "should only record broken links errors" do
     origin_url = "http://www.google.com"
-    Magellan::Explorer.any_instance.stubs(:doit).with(origin_url).returns(create_success_result(['http://www.google.com/foo.html']))
-    Magellan::Explorer.any_instance.stubs(:doit).with('http://www.google.com/foo.html').returns(create_result("404",[]))
+    Magellan::Explorer.any_instance.stubs(:explore_a).with(origin_url).returns(create_success_result(['http://www.google.com/foo.html']))
+    Magellan::Explorer.any_instance.stubs(:explore_a).with('http://www.google.com/foo.html').returns(create_result("404",[]))
     cartographer = Magellan::Cartographer.new(origin_url)
     cartographer.crawl
     cartographer.has_broken_links?.should be_true
@@ -39,7 +39,7 @@ describe Magellan::Cartographer do
 
   it "should record 4** errors" do
     origin_url = "http://www.google.com"
-    Magellan::Explorer.any_instance.stubs(:doit).with(origin_url).returns(create_result("404",[]))
+    Magellan::Explorer.any_instance.stubs(:explore_a).with(origin_url).returns(create_result("404",[]))
     cartographer = Magellan::Cartographer.new(origin_url)
     cartographer.crawl
     cartographer.broken_links.first.origin_url.should eql(origin_url)
@@ -48,7 +48,7 @@ describe Magellan::Cartographer do
   
   it "have url and status code in the error message" do
     origin_url = "http://www.google.com"
-    Magellan::Explorer.any_instance.stubs(:doit).with(origin_url).returns(create_result("404",[]))
+    Magellan::Explorer.any_instance.stubs(:explore_a).with(origin_url).returns(create_result("404",[]))
     cartographer = Magellan::Cartographer.new(origin_url)
     cartographer.crawl
     cartographer.failure_message.should include(origin_url)
@@ -57,7 +57,7 @@ describe Magellan::Cartographer do
   
   it "should record 5** errors" do
     origin_url = "http://www.google.com"
-    Magellan::Explorer.any_instance.stubs(:doit).with(origin_url).returns(create_result("500",[]))
+    Magellan::Explorer.any_instance.stubs(:explore_a).with(origin_url).returns(create_result("500",[]))
     cartographer = Magellan::Cartographer.new(origin_url)
     cartographer.crawl
     cartographer.broken_links.first.origin_url.should eql(origin_url)
@@ -66,17 +66,17 @@ describe Magellan::Cartographer do
 
   it "should be able to specify crawlable domains" do
     origin_url = "http://www.google.com"
-    Magellan::Explorer.any_instance.expects(:doit).once.with(origin_url).returns(create_success_result(['http://www.foo.com']))
-    Magellan::Explorer.any_instance.expects(:doit).once.with('http://www.foo.com').returns(create_success_result(['http://www.bar.com']))
+    Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(['http://www.foo.com']))
+    Magellan::Explorer.any_instance.expects(:explore_a).once.with('http://www.foo.com').returns(create_success_result(['http://www.bar.com']))
     cartographer = Magellan::Cartographer.new(origin_url, 5,['http://www.google.com','http://www.foo.com'])
     cartographer.crawl
   end
 
   it "should go n layers deep into a site" do
     origin_url = "http://www.google.com"
-    Magellan::Explorer.any_instance.expects(:doit).once.with(origin_url).returns(create_success_result(['http://www.google.com/foo.html']))
-    Magellan::Explorer.any_instance.expects(:doit).once.with('http://www.google.com/foo.html').returns(create_success_result(['http://www.google.com/foo2.html']))
-    Magellan::Explorer.any_instance.expects(:doit).once.with('http://www.google.com/foo2.html').returns(create_success_result(['http://www.google.com/foo3.html']))
+    Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(['http://www.google.com/foo.html']))
+    Magellan::Explorer.any_instance.expects(:explore_a).once.with('http://www.google.com/foo.html').returns(create_success_result(['http://www.google.com/foo2.html']))
+    Magellan::Explorer.any_instance.expects(:explore_a).once.with('http://www.google.com/foo2.html').returns(create_success_result(['http://www.google.com/foo3.html']))
     cartographer = Magellan::Cartographer.new(origin_url,3)
     cartographer.crawl
   end
@@ -89,8 +89,8 @@ describe Magellan::Cartographer do
 
   it "should know where a broken link was linked from" do
     origin_url = "http://www.google.com/jskfjlsajfd"
-    Magellan::Explorer.any_instance.expects(:doit).with(origin_url).returns(create_success_result(['http://www.google.com/foo.html']))
-    Magellan::Explorer.any_instance.expects(:doit).with('http://www.google.com/foo.html').returns(create_result("404",[]))
+    Magellan::Explorer.any_instance.expects(:explore_a).with(origin_url).returns(create_success_result(['http://www.google.com/foo.html']))
+    Magellan::Explorer.any_instance.expects(:explore_a).with('http://www.google.com/foo.html').returns(create_result("404",[]))
     cartographer = Magellan::Cartographer.new(origin_url)
     cartographer.crawl
     cartographer.has_broken_links?.should be_true
