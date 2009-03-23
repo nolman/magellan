@@ -17,7 +17,12 @@ module Magellan
       begin
         response = open(url)
         doc = Hpricot(response)
-        convert_to_absolute_urls(response.status.first, doc.links_to_other_documents)
+        status_code = response.status.first
+        if response.content_type == "text/html"
+          convert_to_absolute_urls(status_code, doc.links_to_other_documents)
+        else
+          convert_to_absolute_urls(status_code, [])
+        end
       rescue OpenURI::HTTPError => the_error
         convert_to_absolute_urls(the_error.io.status.first, [])
       end

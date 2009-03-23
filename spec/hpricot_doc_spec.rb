@@ -34,6 +34,4 @@ describe "Hpricot Extensions" do
     doc.links_to_other_documents.should be_empty
   end
   
-  it "should not explore links in js files"
-  
 end
