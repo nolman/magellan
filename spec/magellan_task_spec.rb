@@ -36,7 +36,8 @@ describe "Magellan Tasks" do
       t.explore_depth = 1
       t.origin_url = "http://canrailsscale.com"
     end
-    Magellan::Explorer.any_instance.expects(:explore_a).once.with("http://canrailsscale.com").returns(create_result("500"))
+    $stderr.expects(:puts)
+    Magellan::Explorer.any_instance.stubs(:explore_a).once.with("http://canrailsscale.com").returns(create_result("500"))
     lambda {@rake.invoke_task("exception_task")}.should raise_error
   end
 
