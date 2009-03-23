@@ -19,7 +19,7 @@ module Magellan
     
     def recursive_explore(origin_url,url,depth)
       if should_crawl_this_url?(url) && i_am_not_too_deep?(depth)
-        result = Explorer.new.explore(url)
+        result = Explorer.new(url).explore
         result.origin_url = origin_url
         @known_urls[url] = nil
         record_link_if_broken(result)

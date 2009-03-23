@@ -27,7 +27,7 @@ describe "Magellan Tasks" do
       t.explore_depth = 1
       t.origin_url = "http://localhost:8080"
     end
-    Magellan::Explorer.any_instance.expects(:explore).once.with("http://localhost:8080").returns(Magellan::Result.new("http://localhost:8080","200",[]))
+    Magellan::Explorer.any_instance.expects(:doit).once.with("http://localhost:8080").returns(create_result("200"))
     @rake.invoke_task("invoke_task")
   end
 
@@ -36,9 +36,14 @@ describe "Magellan Tasks" do
       t.explore_depth = 1
       t.origin_url = "http://canrailsscale.com"
     end
-    Magellan::Explorer.any_instance.expects(:explore).once.with("http://canrailsscale.com").returns(Magellan::Result.new("http://localhost:8080","500",[]))
+    Magellan::Explorer.any_instance.expects(:doit).once.with("http://canrailsscale.com").returns(create_result("500"))
     lambda {@rake.invoke_task("exception_task")}.should raise_error
   end
+
+  def create_result(status_code)
+    OpenStruct.new({:status_code => status_code, :linked_resources => [], :origin_url =>"foo"})
+  end
+
 
   def tasks
     @rake.tasks.collect{|task| task.name }
