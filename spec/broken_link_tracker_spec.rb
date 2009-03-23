@@ -36,7 +36,14 @@ describe Magellan::BrokenLinkTracker do
     broken_link_tracker.broken_links.first.status_code.should eql('500')
   end
 
-  it "should know where a broken link was linked from"
+  it "should know where a broken link was first linked from" do
+    broken_link_tracker = Magellan::BrokenLinkTracker.new
+    broken_link_tracker.update(Time.now,create_result('bar',"200",['fooz']))
+    broken_link_tracker.update(Time.now,create_result('zoro',"200",['fooz']))
+    broken_link_tracker.update(Time.now,create_result('fooz',"500",[]))
+    broken_link_tracker.failure_message.should include("bar")
+    broken_link_tracker.failure_message.should_not include("zoro")
+  end
   
   def create_success_result(url,linked_resources)
     create_result(url,"200",linked_resources)
