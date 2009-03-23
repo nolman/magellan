@@ -1,14 +1,13 @@
 require 'activesupport'
+require 'observer'
 
 module Magellan
   class Cartographer
-    #if we use the observer pattern for a new result we can change this to broadcast a new result
-    attr_reader :broken_links
+    include Observable
 
     def initialize(origin_url, depth_to_explore = 5, domains = [origin_url])
       @origin_url = origin_url
       @known_urls = {}
-      @broken_links = []
       @domains = domains.map {|domain| URI.parse(domain)}
       @depth_to_explore = depth_to_explore
     end
@@ -20,9 +19,9 @@ module Magellan
     def recursive_explore(origin_url,url,depth)
       if should_crawl_this_url?(url) && i_am_not_too_deep?(depth)
         result = Explorer.new(url).explore
-        result.url = url
+        changed
+        notify_observers(Time.now, result)
         @known_urls[url] = nil
-        record_link_if_broken(result)
         result.linked_resources.each do |linked_resource|
           recursive_explore(url,linked_resource, depth+1)
         end
@@ -44,21 +43,5 @@ module Magellan
     def a_domain_we_care_about?(url)
       !@domains.select { |domain| URI.parse(url).host == domain.host }.empty?
     end
-    
-    #this method will likely belong in another class
-    def record_link_if_broken(result)
-      if result.status_code.starts_with?("5") || result.status_code.starts_with?("4")
-        @broken_links << result
-      end
-    end
-    
-    def has_broken_links?
-      !@broken_links.empty?
-    end
-    
-    def failure_message
-      @broken_links.map{|broken_link| "#{broken_link.url} returned #{broken_link.status_code}"}.join("\n")
-    end
-    
   end
 end

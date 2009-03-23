@@ -25,11 +25,11 @@ module Magellan
 
     def convert_to_absolute_urls(status_code,linked_resources)
       absolute_links = linked_resources.map { |linked_resource| linked_resource.to_absolute_url(@url)}
-      Explorer.create_result(status_code,absolute_links)
+      Explorer.create_result(@url,status_code,absolute_links)
     end
 
-    def self.create_result(status_code,absolute_links)
-      OpenStruct.new({:status_code => status_code, :linked_resources => absolute_links})
+    def self.create_result(url,status_code,absolute_links)
+      OpenStruct.new({:status_code => status_code, :linked_resources => absolute_links, :url => url})
     end
   end
 end

@@ -41,7 +41,7 @@ describe "Magellan Tasks" do
   end
 
   def create_result(status_code)
-    Magellan::Explorer.create_result(status_code, [])
+    Magellan::Explorer.create_result('',status_code, [])
   end
 
   def tasks

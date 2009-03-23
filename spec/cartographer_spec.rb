@@ -10,14 +10,15 @@ describe Magellan::Cartographer do
     cartographer.crawl
   end
 
-  it "should not report broken links if there are none" do
+  it "should notify observers when a result comes in" do
     origin_url = "http://www.google.com"
-    Magellan::Explorer.any_instance.stubs(:explore_a).once.with(origin_url).returns(create_success_result(['http://www.google.com']))
+    Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(['http://www.google.com']))
     cartographer = Magellan::Cartographer.new(origin_url)
+    foo = Object.new
+    foo.expects(:update)
+    cartographer.add_observer(foo)
     cartographer.crawl
-    cartographer.has_broken_links?.should be_false
   end
-
 
   it "should explorer other linked resources" do
     origin_url = "http://www.google.com"
@@ -25,43 +26,6 @@ describe Magellan::Cartographer do
     Magellan::Explorer.any_instance.expects(:explore_a).with('http://www.google.com/foo.html').returns(create_success_result([]))
     cartographer = Magellan::Cartographer.new(origin_url)
     cartographer.crawl
-  end
-
-  it "should only record broken links errors" do
-    origin_url = "http://www.google.com"
-    Magellan::Explorer.any_instance.stubs(:explore_a).with(origin_url).returns(create_success_result(['http://www.google.com/foo.html']))
-    Magellan::Explorer.any_instance.stubs(:explore_a).with('http://www.google.com/foo.html').returns(create_result("404",[]))
-    cartographer = Magellan::Cartographer.new(origin_url)
-    cartographer.crawl
-    cartographer.has_broken_links?.should be_true
-    cartographer.broken_links.size.should eql(1)
-  end
-
-  it "should record 4** errors" do
-    origin_url = "http://www.google.com"
-    Magellan::Explorer.any_instance.stubs(:explore_a).with(origin_url).returns(create_result("404",[]))
-    cartographer = Magellan::Cartographer.new(origin_url)
-    cartographer.crawl
-    cartographer.broken_links.first.url.should eql(origin_url)
-    cartographer.broken_links.first.status_code.should eql('404')
-  end
-  
-  it "have url and status code in the error message" do
-    origin_url = "http://www.google.com"
-    Magellan::Explorer.any_instance.stubs(:explore_a).with(origin_url).returns(create_result("404",[]))
-    cartographer = Magellan::Cartographer.new(origin_url)
-    cartographer.crawl
-    cartographer.failure_message.should include(origin_url)
-    cartographer.failure_message.should include("404")
-  end
-  
-  it "should record 5** errors" do
-    origin_url = "http://www.google.com"
-    Magellan::Explorer.any_instance.stubs(:explore_a).with(origin_url).returns(create_result("500",[]))
-    cartographer = Magellan::Cartographer.new(origin_url)
-    cartographer.crawl
-    cartographer.broken_links.first.url.should eql(origin_url)
-    cartographer.broken_links.first.status_code.should eql('500')
   end
 
   it "should be able to specify crawlable domains" do
@@ -86,26 +50,16 @@ describe Magellan::Cartographer do
     cartographer = Magellan::Cartographer.new(origin_url)
     cartographer.a_domain_we_care_about?("http://www.google.com/index.html").should be_true
   end
-
-  it "should know where a broken link was linked from" do
-    origin_url = "http://www.google.com/jskfjlsajfd"
-    Magellan::Explorer.any_instance.expects(:explore_a).with(origin_url).returns(create_success_result(['http://www.google.com/foo.html']))
-    Magellan::Explorer.any_instance.expects(:explore_a).with('http://www.google.com/foo.html').returns(create_result("404",[]))
-    cartographer = Magellan::Cartographer.new(origin_url)
-    cartographer.crawl
-    cartographer.has_broken_links?.should be_true
-    cartographer.failure_message.should include('http://www.google.com/foo.html')
-  end
   
   it "should go through a entire site if layers to explore is set to -1"
   it "should explore n layers into external domains"
 
-  def create_success_result(urls)
-    create_result("200",urls)
+  def create_success_result(linked_resources)
+    create_result("200",linked_resources)
   end
   
-  def create_result(status_code, urls)
-    Magellan::Explorer.create_result(status_code,urls)
+  def create_result(status_code, linked_resources)
+    Magellan::Explorer.create_result("f",status_code,linked_resources)
   end
   
 end
