@@ -17,7 +17,7 @@ module Magellan
     end
     
     def recursive_explore(origin_url,url,depth)
-      if should_crawl_this_url?(url) && i_am_not_too_deep?(depth)
+      if i_have_not_seen_this_url_yet?(url) && a_domain_we_care_about?(url) && i_am_not_too_deep?(depth)
         result = Explorer.new(url).explore
         changed
         notify_observers(Time.now, result)
@@ -26,10 +26,6 @@ module Magellan
           recursive_explore(url,linked_resource, depth+1)
         end
       end
-    end
-
-    def should_crawl_this_url?(url)
-      i_have_not_seen_this_url_yet?(url) && a_domain_we_care_about?(url)
     end
 
     def i_have_not_seen_this_url_yet?(url)
