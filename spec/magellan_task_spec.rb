@@ -40,8 +40,9 @@ describe "Magellan Tasks" do
     lambda {@rake.invoke_task("exception_task")}.should raise_error
   end
 
+
   def create_result(status_code)
-    OpenStruct.new({:status_code => status_code, :linked_resources => [], :origin_url =>"foo"})
+    Magellan::Explorer.create_result(status_code, [])
   end
 
 

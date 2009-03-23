@@ -96,7 +96,7 @@ describe Magellan::Cartographer do
     cartographer.has_broken_links?.should be_true
     cartographer.failure_message.should include(origin_url)
   end
-
+  
   it "should go through a entire site if layers to explore is set to -1"
   it "should explore n layers into external domains"
 
@@ -105,7 +105,7 @@ describe Magellan::Cartographer do
   end
   
   def create_result(status_code, urls)
-    OpenStruct.new({:status_code =>status_code,:linked_resources => urls})
+    Magellan::Explorer.create_result(status_code,urls)
   end
   
 end
