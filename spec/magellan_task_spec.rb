@@ -18,12 +18,12 @@ describe "Magellan Tasks" do
   end
 
   it "should create rake spec tasks for all sites" do
-    Magellan::Rake::Task.new
+    Magellan::Rake::BrokenLinksTask.new
     tasks.include?("magellan:explore").should be_true
   end
 
   it "should explore when task is invoked" do
-    Magellan::Rake::Task.new("invoke_task") do |t|
+    Magellan::Rake::BrokenLinksTask.new("invoke_task") do |t|
       t.explore_depth = 1
       t.origin_url = "http://localhost:8080"
     end
@@ -32,7 +32,7 @@ describe "Magellan Tasks" do
   end
 
   it "should raise exception when broken links are found" do
-    Magellan::Rake::Task.new("exception_task") do |t|
+    Magellan::Rake::BrokenLinksTask.new("exception_task") do |t|
       t.explore_depth = 1
       t.origin_url = "http://canrailsscale.com"
     end
