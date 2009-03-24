@@ -7,7 +7,7 @@ module Magellan
 
     def initialize(origin_url, depth_to_explore = 5, domains = [origin_url])
       @origin_url = origin_url
-      @known_urls = {}
+      @known_urls = []
       @domains = domains.map {|domain| URI.parse(domain)}
       @depth_to_explore = depth_to_explore
     end
@@ -21,7 +21,7 @@ module Magellan
         result = Explorer.new(url).explore
         changed
         notify_observers(Time.now, result)
-        @known_urls[url] = nil
+        @known_urls << url.remove_fragment
         result.linked_resources.each do |linked_resource|
           recursive_explore(linked_resource, depth+1)
         end
@@ -29,7 +29,7 @@ module Magellan
     end
 
     def i_have_not_seen_this_url_yet?(url)
-      !@known_urls.include?(url)
+      !@known_urls.include?(url.remove_fragment)
     end
 
     def i_am_not_too_deep?(depth)

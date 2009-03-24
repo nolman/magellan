@@ -9,7 +9,7 @@ class String
     end
   end
   
-  def chomp_fragment
+  def remove_fragment
     self.gsub(/#.*/,'')
   end
 end

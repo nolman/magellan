@@ -23,9 +23,14 @@ describe Magellan::Explorer do
     result.status_code.should eql("404")
   end
 
-  it "not get any links if it not a text/xhtml file" do
+  it "should not get any links if it not a text/xhtml file" do
     result = Magellan::Explorer.new("http://jqueryjs.googlecode.com/files/jquery-1.3.2.min.js").explore
     result.linked_resources.should be_empty
+  end
+
+  it "should not remove fragments when converting to absolute urls" do
+    results = Magellan::Explorer.create_result("http://www.google.com/index.html","200",["/index.html#foo"])
+    results.linked_resources.should include("http://www.google.com/index.html#foo")
   end
 
 end

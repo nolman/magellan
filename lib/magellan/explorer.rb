@@ -29,7 +29,7 @@ module Magellan
     end
 
     def self.create_result(url,status_code,links)
-      absolute_links = links.map { |linked_resource| linked_resource.to_absolute_url(url).chomp_fragment }
+      absolute_links = links.map { |linked_resource| linked_resource.to_absolute_url(url) }
       OpenStruct.new({:status_code => status_code, :linked_resources => absolute_links, :url => url})
     end
   end

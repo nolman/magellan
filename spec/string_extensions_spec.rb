@@ -42,7 +42,7 @@ describe "String Extensions" do
   end
   
   it "should chomp the fragment portion off the url" do
-    "http://video.google.com/foo/about.html#sdkfjskajflsajf".chomp_fragment.should eql("http://video.google.com/foo/about.html")
+    "http://video.google.com/foo/about.html#sdkfjskajflsajf".remove_fragment.should eql("http://video.google.com/foo/about.html")
   end
 
 end
