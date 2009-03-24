@@ -33,4 +33,12 @@ describe "String Extensions" do
     input.to_absolute_url('https://www.google.com/').should eql('https://www.google.com/intl/en/about.html')
   end
   
+  it "should translate relative urls to absolute ones" do
+    "/intl/en/about.html".to_absolute_url("http://www.google.com").should eql('http://www.google.com/intl/en/about.html')
+  end
+
+  it "should not translate absolute urls" do
+    "http://video.google.com/foo/about.html".to_absolute_url("http://www.google.com").should eql("http://video.google.com/foo/about.html")
+  end
+
 end

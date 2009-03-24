@@ -19,18 +19,13 @@ module Magellan
         doc = Hpricot(response)
         status_code = response.status.first
         if response.content_type == "text/html"
-          Explorer.convert_to_absolute_urls(url,status_code, doc.links_to_other_documents)
+          Explorer.create_result(url,status_code, doc.links_to_other_documents.map { |linked_resource| linked_resource.to_absolute_url(url)})
         else
-          Explorer.convert_to_absolute_urls(url,status_code, [])
+          Explorer.create_result(url,status_code, [])
         end
       rescue OpenURI::HTTPError => the_error
-        Explorer.convert_to_absolute_urls(url,the_error.io.status.first, [])
+        Explorer.create_result(url,the_error.io.status.first, [])
       end
-    end
-
-    def self.convert_to_absolute_urls(url,status_code,linked_resources)
-      absolute_links = linked_resources.map { |linked_resource| linked_resource.to_absolute_url(url)}
-      create_result(url,status_code,absolute_links)
     end
 
     def self.create_result(url,status_code,absolute_links)
