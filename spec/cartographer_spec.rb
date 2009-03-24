@@ -9,7 +9,7 @@ describe Magellan::Cartographer do
     cartographer = Magellan::Cartographer.new(origin_url)
     cartographer.crawl
   end
-
+  
   it "should notify observers when a result comes in" do
     origin_url = "http://www.google.com"
     Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(['http://www.google.com']))
