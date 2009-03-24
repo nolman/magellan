@@ -13,6 +13,11 @@ describe "String Extensions" do
     input.to_absolute_url('http://www.google.com/something/index.html').should eql('http://www.google.com/foo/trac.js')
   end
 
+  it "should merge urls correctly with dots" do
+    input = '../foo/trac.js'
+    input.to_absolute_url('http://www.google.com/something/index.html').should eql('http://www.google.com/foo/trac.js')
+  end
+
   it "should do nothing to absolute http urls" do
     input = 'http://www.apple.com'
     input.to_absolute_url('http://www.google.com').should eql('http://www.apple.com')
@@ -43,6 +48,11 @@ describe "String Extensions" do
   
   it "should chomp the fragment portion off the url" do
     "http://video.google.com/foo/about.html#sdkfjskajflsajf".remove_fragment.should eql("http://video.google.com/foo/about.html")
+  end
+  
+  it "should strip spaces off of the input url" do
+    input = ' http://www.apple.com'
+    input.to_absolute_url('http://www.google.com').should eql('http://www.apple.com')
   end
 
 end

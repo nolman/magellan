@@ -32,5 +32,5 @@ describe Magellan::Explorer do
     results = Magellan::Explorer.create_result("http://www.google.com/index.html","200",["/index.html#foo"])
     results.linked_resources.should include("http://www.google.com/index.html#foo")
   end
-
+  
 end

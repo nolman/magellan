@@ -58,6 +58,14 @@ describe Magellan::Cartographer do
     cartographer.a_domain_we_care_about?("http://www.google.com/index.html").should be_true
   end
   
+  it "should not explore js urls" do
+    origin_url = "http://www.google.com"
+    Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(["javascript:bookmarksite('ThoughtWorks Studios', 'http://studios.thoughtworks.com')",'http://www.google.com/foo']))
+    Magellan::Explorer.any_instance.expects(:explore_a).once.with('http://www.google.com/foo').returns(create_success_result([]))
+    cartographer = Magellan::Cartographer.new(origin_url, 5)
+    cartographer.crawl
+  end
+  
   it "should go through a entire site if layers to explore is set to -1"
   it "should explore n layers into external domains"
   
