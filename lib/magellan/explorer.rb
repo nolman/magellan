@@ -16,15 +16,16 @@ module Magellan
     def explore_a(url)
       begin
         response = open(url)
+        url = response.base_uri.to_s
         doc = Hpricot(response)
         status_code = response.status.first
         if response.content_type == "text/html"
-          Explorer.create_result(url,status_code, doc.links_to_other_documents)
+          Explorer.create_result(url, status_code, doc.links_to_other_documents)
         else
-          Explorer.create_result(url,status_code, [])
+          Explorer.create_result(url, status_code, [])
         end
       rescue OpenURI::HTTPError => the_error
-        Explorer.create_result(url,the_error.io.status.first, [])
+        Explorer.create_result(url, the_error.io.status.first, [])
       end
     end
 

@@ -28,6 +28,11 @@ describe Magellan::Explorer do
     result.linked_resources.should be_empty
   end
 
+  it "should update url if redirected" do
+    result = Magellan::Explorer.new("http://www.thoughtworks.com/mingle").explore
+    result.url.should eql("http://studios.thoughtworks.com/mingle-agile-project-management")
+  end
+
   it "should not remove fragments when converting to absolute urls" do
     results = Magellan::Explorer.create_result("http://www.google.com/index.html","200",["/index.html#foo"])
     results.linked_resources.should include("http://www.google.com/index.html#foo")
