@@ -40,5 +40,9 @@ describe "String Extensions" do
   it "should not translate absolute urls" do
     "http://video.google.com/foo/about.html".to_absolute_url("http://www.google.com").should eql("http://video.google.com/foo/about.html")
   end
+  
+  it "should chomp the fragment portion off the url" do
+    "http://video.google.com/foo/about.html#sdkfjskajflsajf".chomp_fragment.should eql("http://video.google.com/foo/about.html")
+  end
 
 end

@@ -19,7 +19,7 @@ module Magellan
         doc = Hpricot(response)
         status_code = response.status.first
         if response.content_type == "text/html"
-          Explorer.create_result(url,status_code, doc.links_to_other_documents.map { |linked_resource| linked_resource.to_absolute_url(url)})
+          Explorer.create_result(url,status_code, doc.links_to_other_documents)
         else
           Explorer.create_result(url,status_code, [])
         end
@@ -28,7 +28,8 @@ module Magellan
       end
     end
 
-    def self.create_result(url,status_code,absolute_links)
+    def self.create_result(url,status_code,links)
+      absolute_links = links.map { |linked_resource| linked_resource.to_absolute_url(url).chomp_fragment }
       OpenStruct.new({:status_code => status_code, :linked_resources => absolute_links, :url => url})
     end
   end

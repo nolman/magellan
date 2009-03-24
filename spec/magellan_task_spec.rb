@@ -27,7 +27,7 @@ describe "Magellan Tasks" do
       t.explore_depth = 1
       t.origin_url = "http://localhost:8080"
     end
-    Magellan::Explorer.any_instance.expects(:explore_a).once.with("http://localhost:8080").returns(create_result("200"))
+    Magellan::Explorer.any_instance.expects(:explore_a).once.with("http://localhost:8080").returns(create_result("http://localhost:8080","200"))
     @rake.invoke_task("invoke_task")
   end
 
@@ -37,12 +37,12 @@ describe "Magellan Tasks" do
       t.origin_url = "http://canrailsscale.com"
     end
     $stderr.expects(:puts)
-    Magellan::Explorer.any_instance.stubs(:explore_a).once.with("http://canrailsscale.com").returns(create_result("500"))
+    Magellan::Explorer.any_instance.stubs(:explore_a).once.with("http://canrailsscale.com").returns(create_result("http://canrailsscale.com","500"))
     lambda {@rake.invoke_task("exception_task")}.should raise_error
   end
 
-  def create_result(status_code)
-    Magellan::Explorer.create_result('',status_code, [])
+  def create_result(url,status_code)
+    Magellan::Explorer.create_result(url,status_code, [])
   end
 
   def tasks

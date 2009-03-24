@@ -59,7 +59,7 @@ describe Magellan::Cartographer do
   end
   
   def create_result(status_code, linked_resources)
-    Magellan::Explorer.create_result("f",status_code,linked_resources)
+    Magellan::Explorer.create_result("http://www.google.com",status_code,linked_resources)
   end
   
 end

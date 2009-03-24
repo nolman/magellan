@@ -8,4 +8,8 @@ class String
       origin_url[/https*:\/\/[^\/]*/] + self
     end
   end
+  
+  def chomp_fragment
+    self.gsub(/#.*/,'')
+  end
 end
