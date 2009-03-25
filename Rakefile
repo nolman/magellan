@@ -21,5 +21,5 @@ end
 
 Magellan::Rake::BrokenLinksTask.new do |t|
   t.origin_url = "http://www.ibm.com/"
-  t.explore_depth = 3
+  t.explore_depth = 8
 end

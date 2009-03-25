@@ -42,5 +42,9 @@ describe Magellan::Explorer do
     results = Magellan::Explorer.create_result("http://www.google.com/index.html","200",["/index.html#foo"])
     results.linked_resources.should include("http://www.google.com/index.html#foo")
   end
+  it "should be able to crawl ftp based links" do
+    result = Magellan::Explorer.new("ftp://ftp.software.ibm.com/common/ssi/sa/wh/n/buw03008usen/BUW03008USEN.PDF").explore
+    result.status_code.should eql("")
+  end
   
 end
