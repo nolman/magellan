@@ -27,7 +27,12 @@ module Magellan
           cartographer = Magellan::Cartographer.new(@origin_url,@explore_depth)
           broken_link_tracker = Magellan::BrokenLinkTracker.new
           cartographer.add_observer(broken_link_tracker)
+          started = Time.now
+          puts "Started at: #{started}"
           cartographer.crawl
+          finished = Time.now
+          puts "Finished at: #{finished}"
+          puts "Total time: #{finished-started}"
           if broken_link_tracker.has_broken_links?
             STDERR.puts broken_link_tracker.failure_message
             raise "#{@name} failed while exploring"

@@ -13,17 +13,22 @@ module Magellan
     end
 
     def crawl
-      recursive_explore(@origin_url,1)
+      recursive_explore([@origin_url],1)
     end
-    
-    def recursive_explore(url,depth)
-      if i_have_not_seen_this_url_yet?(url) && a_domain_we_care_about?(url) && i_am_not_too_deep?(depth)
-        result = Explorer.new(url).explore
+
+    def recursive_explore(urls,depth)
+      #      if i_have_not_seen_this_url_yet?(urls) && a_domain_we_care_about?(urls) && i_am_not_too_deep?(depth)
+      if i_am_not_too_deep?(depth)
+        results = Explorer.new(urls).explore
         changed
-        notify_observers(Time.now, result)
-        @known_urls << url.remove_fragment
-        result.linked_resources.each do |linked_resource|
-          recursive_explore(linked_resource, depth+1)
+        results.each do |result|
+          notify_observers(Time.now, result)
+        end
+#        @known_urls << url.remove_fragment
+        results.each do |result|
+          result.linked_resources.chunk(40).each do |result_chunk|
+            recursive_explore(result_chunk,depth+1)
+          end
         end
       end
     end
@@ -39,5 +44,16 @@ module Magellan
     def a_domain_we_care_about?(url)
       !@domains.select { |domain| URI.parse(url).host == domain.host }.empty?
     end
+  end
+end
+
+class Array
+  def chunk(max_size)
+    result = []
+    number_of_chunks = (self.size.to_f / max_size).ceil
+    for i in 0...number_of_chunks do
+      result[i] = self[i*max_size...(i+1)*max_size]
+    end
+    result
   end
 end
