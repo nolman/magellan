@@ -26,6 +26,18 @@ describe Magellan::Cartographer do
     cartographer.add_observer(foo)
     cartographer.crawl
   end
+  
+  it "should notify observers everytime a result comes in" do
+    origin_url = "http://www.google.com"
+    Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(['http://www.google.com/foo.html','http://www.google.com/bar.html']))
+    Magellan::Explorer.any_instance.expects(:explore_a).with('http://www.google.com/foo.html').returns(create_success_result([]))
+    Magellan::Explorer.any_instance.expects(:explore_a).with('http://www.google.com/bar.html').returns(create_success_result([]))
+    cartographer = Magellan::Cartographer.new(origin_url)
+    foo = Object.new
+    foo.expects(:update).times(3)
+    cartographer.add_observer(foo)
+    cartographer.crawl
+  end
 
   it "should explorer other linked resources" do
     origin_url = "http://www.google.com"

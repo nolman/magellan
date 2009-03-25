@@ -19,8 +19,8 @@ module Magellan
     def recursive_explore(urls,depth)
       if i_am_not_too_deep?(depth)
         results = Explorer.new(urls).explore
-        changed
         results.each do |result|
+          changed
           notify_observers(Time.now, result)
           @known_urls << result.url.remove_fragment
         end
