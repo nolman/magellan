@@ -34,7 +34,15 @@ describe Magellan::Cartographer do
     cartographer = Magellan::Cartographer.new(origin_url)
     cartographer.crawl
   end
-
+  
+  it "should not explore the same url more then once" do
+    origin_url = "http://www.google.com"
+    Magellan::Explorer.any_instance.expects(:explore_a).with(origin_url).returns(create_success_result(['http://www.google.com/foo.html','http://www.google.com/foo.html']))
+    Magellan::Explorer.any_instance.expects(:explore_a).with('http://www.google.com/foo.html').returns(create_success_result([]))
+    cartographer = Magellan::Cartographer.new(origin_url)
+    cartographer.crawl
+  end
+  
   it "should be able to specify crawlable domains" do
     origin_url = "http://www.google.com"
     Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(['http://www.foo.com']))

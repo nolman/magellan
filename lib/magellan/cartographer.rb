@@ -24,11 +24,13 @@ module Magellan
         results.each do |result|
           notify_observers(Time.now, result)
         end
-#        @known_urls << url.remove_fragment
-        results.each do |result|
-          result.linked_resources.chunk(40).each do |result_chunk|
-            recursive_explore(result_chunk,depth+1)
-          end
+        #        @known_urls << url.remove_fragment
+        all_urls = results.map {|result| result.linked_resources }.flatten
+        all_urls.uniq!
+        all_urls.delete_if { |url| !a_domain_we_care_about?(url)}
+
+        all_urls.chunk(40).each do |result_chunk|
+          recursive_explore(result_chunk,depth+1)
         end
       end
     end
