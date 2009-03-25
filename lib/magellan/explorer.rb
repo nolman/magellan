@@ -10,8 +10,11 @@ module Magellan
     end
 
     def explore
-      result = explore_a(@urls)
-      result
+      reqs = []
+      @urls.each do |url|
+        reqs.push Thread.new { explore_a(url) }
+      end
+      reqs.collect { |req| req.value }
     end
 
     def request_urls(urls)
@@ -26,22 +29,20 @@ module Magellan
       reqs = []
       urls.map { |url| open(url)}
     end
-    
-    def explore_a(urls)
-      responses = request_urls(urls)
-      responses.map do |response|
-        begin
-          url = response.base_uri.to_s
-          doc = Hpricot(response)
-          status_code = response.status.nil? ? "" : response.status.first
-          if response.content_type == "text/html"
-            Explorer.create_result(url, status_code, doc.links_to_other_documents)
-          else
-            Explorer.create_result(url, status_code, [])
-          end
-        rescue OpenURI::HTTPError => the_error
-          Explorer.create_result(url, the_error.io.status.first, [])
+
+    def explore_a(url)
+      begin
+        response = open(url)
+        url = response.base_uri.to_s
+        doc = Hpricot(response)
+        status_code = response.status.nil? ? "" : response.status.first
+        if response.content_type == "text/html"
+          Explorer.create_result(url, status_code, doc.links_to_other_documents)
+        else
+          Explorer.create_result(url, status_code, [])
         end
+      rescue OpenURI::HTTPError => the_error
+        Explorer.create_result(url, the_error.io.status.first, [])
       end
     end
 
