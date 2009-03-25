@@ -17,19 +17,6 @@ module Magellan
       reqs.collect { |req| req.value }
     end
 
-    def request_urls(urls)
-      reqs = []
-      urls.each do |url|
-        reqs.push Thread.new { open(url) }
-      end
-      reqs.collect { |req| req.value }
-    end
-
-    def sync_request_urls(urls)
-      reqs = []
-      urls.map { |url| open(url)}
-    end
-
     def explore_a(url)
       begin
         response = open(url)
