@@ -20,7 +20,6 @@ module Magellan
         define
       end
 
-
       def define
         desc "explore #{@origin_url} for broken links"
         task @name do
@@ -28,7 +27,6 @@ module Magellan
           broken_link_tracker = Magellan::BrokenLinkTracker.new
           cartographer.add_observer(broken_link_tracker)
           cartographer.crawl
-          puts broken_link_tracker.broken_links
           if broken_link_tracker.has_broken_links?
             STDERR.puts broken_link_tracker.failure_message
             raise "#{@name} failed while exploring"

@@ -50,7 +50,7 @@ describe Magellan::Cartographer do
   it "should not explore the same url more then once" do
     origin_url = "http://www.google.com"
     Magellan::Explorer.any_instance.expects(:explore_a).with(origin_url).returns(create_success_result(['http://www.google.com/foo.html','http://www.google.com/foo.html']))
-    Magellan::Explorer.any_instance.expects(:explore_a).with('http://www.google.com/foo.html').returns(create_success_result([]))
+    Magellan::Explorer.any_instance.expects(:explore_a).once.with('http://www.google.com/foo.html').returns(create_success_result([]))
     cartographer = Magellan::Cartographer.new(origin_url)
     cartographer.crawl
   end
@@ -86,6 +86,14 @@ describe Magellan::Cartographer do
     cartographer.crawl
   end
   
+  it "should record the source and the destination url in known urls" do
+    origin_url = "http://studios.thoughtworks.com/cruise"
+    cartographer = Magellan::Cartographer.new(origin_url, 1)
+    cartographer.crawl
+    cartographer.i_have_seen_this_url_before?(origin_url).should be_true
+    cartographer.i_have_seen_this_url_before?("http://studios.thoughtworks.com/cruise-continuous-integration").should be_true
+  end
+  
   it "should go through a entire site if layers to explore is set to -1"
   it "should explore n layers into external domains"
   
@@ -94,7 +102,7 @@ describe Magellan::Cartographer do
   end
   
   def create_result(status_code, linked_resources)
-    Magellan::Explorer.create_result("http://www.google.com",status_code,linked_resources)
+    Magellan::Explorer.create_result("http://www.google.com","http://www.google.com",status_code,linked_resources)
   end
   
 end

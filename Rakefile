@@ -20,6 +20,6 @@ Spec::Rake::SpecTask.new(:rcov) do |t|
 end
 
 Magellan::Rake::BrokenLinksTask.new do |t|
-  t.origin_url = "http://localhost:3000/"
-  t.explore_depth = 3
+  t.origin_url = "http://studios.thoughtworks.com/"
+  t.explore_depth = 10
 end

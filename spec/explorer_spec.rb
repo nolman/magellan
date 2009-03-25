@@ -40,12 +40,12 @@ describe Magellan::Explorer do
 
   it "should update url if redirected" do
     result = Magellan::Explorer.new("http://www.thoughtworks.com/mingle").explore
-    result.first.url.should eql("http://studios.thoughtworks.com/mingle-agile-project-management")
+    result.first.destination_url.should eql("http://studios.thoughtworks.com/mingle-agile-project-management")
   end
 
   it "should be able to go from http to https" do
     result = Magellan::Explorer.new("http://mail.yahoo.com").explore
-    result.first.url.starts_with?("https://").should be_true
+    result.first.destination_url.starts_with?("https://").should be_true
   end
   
   it "should be able to crawl ftp based links" do
@@ -54,7 +54,7 @@ describe Magellan::Explorer do
   end
 
   it "should not remove fragments when converting to absolute urls" do
-    results = Magellan::Explorer.create_result("http://www.google.com/index.html","200",["/index.html#foo"])
+    results = Magellan::Explorer.create_result("http://www.google.com/index.html","http://www.google.com/index.html","200",["/index.html#foo"])
     results.linked_resources.should include("http://www.google.com/index.html#foo")
   end
   
