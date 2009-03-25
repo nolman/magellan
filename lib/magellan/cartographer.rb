@@ -17,17 +17,17 @@ module Magellan
     end
 
     def recursive_explore(urls,depth)
-      #      if i_have_not_seen_this_url_yet?(urls) && a_domain_we_care_about?(urls) && i_am_not_too_deep?(depth)
       if i_am_not_too_deep?(depth)
         results = Explorer.new(urls).explore
         changed
         results.each do |result|
           notify_observers(Time.now, result)
+          @known_urls << result.url.remove_fragment
         end
-        #        @known_urls << url.remove_fragment
         all_urls = results.map {|result| result.linked_resources }.flatten
         all_urls.uniq!
         all_urls.delete_if { |url| !a_domain_we_care_about?(url)}
+        all_urls.delete_if { |url| i_have_seen_this_url_before?(url)}
 
         all_urls.chunk(40).each do |result_chunk|
           recursive_explore(result_chunk,depth+1)
@@ -35,8 +35,8 @@ module Magellan
       end
     end
 
-    def i_have_not_seen_this_url_yet?(url)
-      !@known_urls.include?(url.remove_fragment)
+    def i_have_seen_this_url_before?(url)
+      @known_urls.include?(url.remove_fragment)
     end
 
     def i_am_not_too_deep?(depth)
