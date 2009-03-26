@@ -63,4 +63,8 @@ describe Magellan::Explorer do
     results.linked_resources.should include("http://www.google.com/index.html#foo")
   end
   
+  it "should use destination_url to build new absolute urls" do
+    results = Magellan::Explorer.create_result("http://www.google.com/bob.html","http://www.foo.com/bob.html","200",["/index.html"])
+    results.linked_resources.should include("http://www.foo.com/index.html")
+  end
 end

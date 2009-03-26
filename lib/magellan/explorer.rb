@@ -36,7 +36,7 @@ module Magellan
     def self.create_result(url,destination_url,status_code,links)
       #TODO: not happy with this, handles the error and returns nil and flattens, need to consider how (if) we want to report these errors
       #do we want to pass the bad url back somehow?
-      absolute_links = links.map { |linked_resource| linked_resource.to_absolute_url(url) }.compact
+      absolute_links = links.map { |linked_resource| linked_resource.to_absolute_url(destination_url) }.compact
       OpenStruct.new({:status_code => status_code, :linked_resources => absolute_links, :url => url, :destination_url => destination_url})
     end
   end
