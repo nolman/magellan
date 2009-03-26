@@ -26,11 +26,11 @@ module Magellan
           @known_urls << result.destination_url.remove_fragment
           remove_javascript_and_print_warning result
         end
-        
+
         all_urls = results.map {|result| result.linked_resources }.flatten
         all_urls.uniq!
         #TODO: handle any other url parsing error
-        
+
         all_urls.delete_if { |url| !a_domain_we_care_about?(url)}
         all_urls.delete_if { |url| i_have_seen_this_url_before?(url)}
         all_urls.chunk(40).each do |result_chunk|
@@ -48,16 +48,20 @@ module Magellan
     end
 
     def a_domain_we_care_about?(url)
-      !@domains.select { |domain| URI.parse(url).host == domain.host }.empty?
+      begin
+        !@domains.select { |domain| URI.parse(url).host == domain.host }.empty?
+      rescue URI::InvalidURIError
+        !@domains.select { |domain| url.gsub(/https*:\/\//,'').starts_with?(domain.host) }.empty?
+      end
     end
-    
+
     def remove_javascript_and_print_warning(result)
-      result.linked_resources.delete_if do |linked_resource| 
-        starts_with_javascript = linked_resource.downcase.starts_with?("javascript:") 
+      result.linked_resources.delete_if do |linked_resource|
+        starts_with_javascript = linked_resource.downcase.starts_with?("javascript:")
         $stderr.puts "Found obtrusive javascript: #{linked_resource} on page #{result.url}" if starts_with_javascript
         starts_with_javascript
       end
     end
-    
+
   end
 end

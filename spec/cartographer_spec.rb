@@ -10,10 +10,18 @@ describe Magellan::Cartographer do
     cartographer.crawl
   end
   
-  it "should try to explore urls that have non ascii characters in them" do
+  it "should not visit the origin url more then once if it finds a link with a finishing /" do
     pending
     origin_url = "http://www.google.com"
-    Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(["http://www.reddit.com/r/science/comments/87dk7/cold_fusion_is_a_pipe_dream_but_μcatalyzed_cool/"]))
+    Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(['http://www.google.com/']))
+    cartographer = Magellan::Cartographer.new(origin_url)
+    cartographer.crawl
+  end
+  
+  it "should try to explore urls in the domain we care about that have non ascii characters in them" do
+    origin_url = "http://www.reddit.com"
+    Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(["http://www.reddit.com/r/science/comments/87dk7/cold_fusion_is_a_pipe_dream_but_μcatalyzed_cool/","http://www.domainwedontcareabout.com/μ"]))
+    Magellan::Explorer.any_instance.expects(:explore_a).once.with("http://www.reddit.com/r/science/comments/87dk7/cold_fusion_is_a_pipe_dream_but_μcatalyzed_cool/").returns(create_success_result([]))
     cartographer = Magellan::Cartographer.new(origin_url)
     cartographer.crawl
   end
