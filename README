@@ -11,5 +11,4 @@ Assumptions:
 This tool works best if you follow the rules of unobtrusive javascript and property set the http status code header.
 
 TODO:
-handle mailto: links
 handle uri's with non alpha numeric chars

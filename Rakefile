@@ -21,7 +21,7 @@ end
 
 
 Magellan::Rake::BrokenLinksTask.new do |t|
-  t.origin_url = "http://studios.thoughtworks.com/mingle/movies/Mingle-Excel-Import.swf"
-  t.explore_depth = 1
+  t.origin_url = "http://www.reddit.com"
+  t.explore_depth = 2
 end
 

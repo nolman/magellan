@@ -10,6 +10,14 @@ describe Magellan::Cartographer do
     cartographer.crawl
   end
   
+  it "should try to explore urls that have non ascii characters in them" do
+    pending
+    origin_url = "http://www.google.com"
+    Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(["http://www.reddit.com/r/science/comments/87dk7/cold_fusion_is_a_pipe_dream_but_μcatalyzed_cool/"]))
+    cartographer = Magellan::Cartographer.new(origin_url)
+    cartographer.crawl
+  end
+  
   it "should not visit the same url more then once if they differ by fragment id" do
     origin_url = "http://www.google.com"
     Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(['http://www.google.com#foo']))
@@ -86,6 +94,13 @@ describe Magellan::Cartographer do
     $stderr.expects(:puts).with {|value| value.include?(origin_url) && value.include?("bookmarksite")}
     cartographer.crawl
   end
+  
+  it "should not error out on invalid urls" do
+     origin_url = "http://www.google.com/adsfaf"
+     Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(OpenStruct.new({:status_code => "200", :linked_resources => ["this_is_so_not_a_url"], :url => origin_url, :destination_url => origin_url}))
+     cartographer = Magellan::Cartographer.new(origin_url, 5)
+     cartographer.crawl
+   end
   
   it "should not explore mailto urls" do
     origin_url = "http://www.google.com/adsfaf"
