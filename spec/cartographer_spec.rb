@@ -47,11 +47,19 @@ describe Magellan::Cartographer do
     cartographer.crawl
   end
 
-  it "should explorer other linked resources" do
+  it "should explore other linked resources" do
     origin_url = "http://www.google.com"
     Magellan::Explorer.any_instance.expects(:explore_a).with(origin_url).returns(create_success_result(['http://www.google.com/foo.html']))
     Magellan::Explorer.any_instance.expects(:explore_a).with('http://www.google.com/foo.html').returns(create_success_result([]))
     cartographer = Magellan::Cartographer.new(origin_url)
+    cartographer.crawl
+  end
+  
+  it "should not explore ignored urls" do
+    origin_url = "http://www.google.com"
+    Magellan::Explorer.any_instance.expects(:explore_a).with(origin_url).returns(create_success_result(['http://www.google.com/foo.html','http://www.google.com/ignoreme.html']))
+    Magellan::Explorer.any_instance.expects(:explore_a).with('http://www.google.com/foo.html').returns(create_success_result([]))
+    cartographer = Magellan::Cartographer.new(origin_url,3,[origin_url],['http://www.google.com/ignoreme.html'])
     cartographer.crawl
   end
   
