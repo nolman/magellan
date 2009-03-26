@@ -46,6 +46,10 @@ describe "String Extensions" do
     "http://video.google.com/foo/about.html".to_absolute_url("http://www.google.com").should eql("http://video.google.com/foo/about.html")
   end
   
+  it "should return string itself if uri parse fails" do
+    "something not a url".to_absolute_url("http://www.google.com").should eql("something not a url")
+  end
+  
   it "should chomp the fragment portion off the url" do
     "http://video.google.com/foo/about.html#sdkfjskajflsajf".remove_fragment.should eql("http://video.google.com/foo/about.html")
   end

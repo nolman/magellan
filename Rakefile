@@ -19,7 +19,9 @@ Spec::Rake::SpecTask.new(:rcov) do |t|
   t.rcov_opts << '--exclude spec'
 end
 
+
 Magellan::Rake::BrokenLinksTask.new do |t|
-  t.origin_url = "http://studios.thoughtworks.com/"
-  t.explore_depth = 10
+  t.origin_url = "http://studios.thoughtworks.com/mingle/movies/Mingle-Excel-Import.swf"
+  t.explore_depth = 1
 end
+

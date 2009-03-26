@@ -78,10 +78,18 @@ describe Magellan::Cartographer do
     cartographer.a_domain_we_care_about?("http://www.google.com/index.html").should be_true
   end
   
-  it "should not explore js urls" do
+  it "should not explore js urls and print warnings if they are found, obtrusive javascript is bad mmkay" do
     origin_url = "http://www.google.com"
     Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(["javascript:bookmarksite('ThoughtWorks Studios', 'http://studios.thoughtworks.com')",'http://www.google.com/foo']))
     Magellan::Explorer.any_instance.expects(:explore_a).once.with('http://www.google.com/foo').returns(create_success_result([]))
+    cartographer = Magellan::Cartographer.new(origin_url, 5)
+    $stderr.expects(:puts).with {|value| value.include?(origin_url) && value.include?("bookmarksite")}
+    cartographer.crawl
+  end
+  
+  it "should not explore mailto urls" do
+    origin_url = "http://www.google.com/adsfaf"
+    Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(["mailto:foo"]))
     cartographer = Magellan::Cartographer.new(origin_url, 5)
     cartographer.crawl
   end

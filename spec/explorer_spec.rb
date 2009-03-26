@@ -43,6 +43,11 @@ describe Magellan::Explorer do
     result.first.destination_url.should eql("http://studios.thoughtworks.com/mingle-agile-project-management")
   end
 
+  it "should return source url as desintation url if a error occurs" do
+    result = Magellan::Explorer.new("http://www.google.com/dfkjaslfkjaslfkj.html").explore
+    result.first.destination_url.should eql("http://www.google.com/dfkjaslfkjaslfkj.html")
+  end
+
   it "should be able to go from http to https" do
     result = Magellan::Explorer.new("http://mail.yahoo.com").explore
     result.first.destination_url.starts_with?("https://").should be_true

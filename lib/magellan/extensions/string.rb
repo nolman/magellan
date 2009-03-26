@@ -5,8 +5,7 @@ class String
     begin
       URI.join(origin_url,self.strip).to_s
     rescue URI::InvalidURIError => the_error
-      $stderr.puts "#{self} did not appear to be a valid url"
-      nil
+      self
     end
   end
 

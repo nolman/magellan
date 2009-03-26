@@ -29,7 +29,7 @@ module Magellan
           Explorer.create_result(url, destination_url, status_code, [])
         end
       rescue OpenURI::HTTPError => the_error
-        Explorer.create_result(url, destination_url, the_error.io.status.first, [])
+        Explorer.create_result(url, url, the_error.io.status.first, [])
       end
     end
 
