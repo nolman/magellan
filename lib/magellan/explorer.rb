@@ -19,7 +19,7 @@ module Magellan
 
     def explore_a(url)
       begin
-        response = open(url)
+        response = open(url,{"User-Agent" => "Ruby/#{RUBY_VERSION}"})
         destination_url = response.base_uri.to_s
         doc = Hpricot(response)
         status_code = response.status.nil? ? "" : response.status.first

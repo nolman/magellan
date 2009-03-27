@@ -21,7 +21,7 @@ end
 
 
 Magellan::Rake::BrokenLinksTask.new do |t|
-  t.origin_url = "http://studios.thoughtworks.com"
-  t.explore_depth = 10
+  t.origin_url = "http://digg.com/token/loader/?rp=%2Fmusic"
+  t.explore_depth = 4
 end
 
