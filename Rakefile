@@ -19,9 +19,7 @@ Spec::Rake::SpecTask.new(:rcov) do |t|
   t.rcov_opts << '--exclude spec'
 end
 
-
 Magellan::Rake::BrokenLinksTask.new do |t|
   t.origin_url = "http://www.gap.com"
-  t.explore_depth = 4
+  t.explore_depth = 3
 end
-

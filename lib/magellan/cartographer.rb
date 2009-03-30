@@ -27,7 +27,7 @@ module Magellan
           remove_javascript_and_print_warning result
         end
 
-        all_urls = results.map {|result| result.linked_resources }.flatten
+        all_urls = results.map {|result| result.absolute_linked_resources }.flatten
         all_urls.uniq!
         #TODO: handle any other url parsing error
 

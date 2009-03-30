@@ -35,8 +35,7 @@ module Magellan
     end
 
     def self.create_result(url,destination_url,status_code,links)
-      absolute_links = links.map { |linked_resource| linked_resource.to_s.to_absolute_url(destination_url) }.compact
-      OpenStruct.new({:status_code => status_code, :linked_resources => absolute_links, :url => url, :destination_url => destination_url})
+      Result.new(status_code,url,destination_url,links.map{|link| link.to_s})
     end
   end
 end

@@ -5,7 +5,7 @@ describe Magellan::Explorer do
 
   it "should find other js resources" do
     result = Magellan::Explorer.new(['http://canrailsscale.com/']).explore
-    result.first.linked_resources.should include('http://pagead2.googlesyndication.com/pagead/show_ads.js')
+    result.first.absolute_linked_resources.should include('http://pagead2.googlesyndication.com/pagead/show_ads.js')
   end
 
   it "should have one result for one url" do
@@ -20,12 +20,12 @@ describe Magellan::Explorer do
 
   it "should find other pages to explore via a href" do
     result = Magellan::Explorer.new('http://www.google.com/').explore
-    result.first.linked_resources.should include('http://video.google.com/?hl=en&tab=wv')
+    result.first.absolute_linked_resources.should include('http://video.google.com/?hl=en&tab=wv')
   end
 
   it "should translate relative urls to absolute ones" do
     result = Magellan::Explorer.new('http://www.google.com/').explore
-    result.first.linked_resources.should include('http://www.google.com/intl/en/about.html')
+    result.first.absolute_linked_resources.should include('http://www.google.com/intl/en/about.html')
   end
 
   it "should report non successful status codes" do
@@ -35,7 +35,7 @@ describe Magellan::Explorer do
 
   it "should not get any links if it not a text/xhtml file" do
     result = Magellan::Explorer.new("http://jqueryjs.googlecode.com/files/jquery-1.3.2.min.js").explore
-    result.first.linked_resources.should be_empty
+    result.first.absolute_linked_resources.should be_empty
   end
 
   it "should update url if redirected" do
@@ -59,13 +59,4 @@ describe Magellan::Explorer do
   
   it "should be able to crawl ftp based links"
 
-  it "should not remove fragments when converting to absolute urls" do
-    results = Magellan::Explorer.create_result("http://www.google.com/index.html","http://www.google.com/index.html","200",["/index.html#foo"])
-    results.linked_resources.should include("http://www.google.com/index.html#foo")
-  end
-  
-  it "should use destination_url to build new absolute urls" do
-    results = Magellan::Explorer.create_result("http://www.google.com/bob.html","http://www.foo.com/bob.html","200",["/index.html"])
-    results.linked_resources.should include("http://www.foo.com/index.html")
-  end
 end

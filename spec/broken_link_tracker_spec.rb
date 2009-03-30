@@ -50,6 +50,6 @@ describe Magellan::BrokenLinkTracker do
   end
   
   def create_result(url,status_code, linked_resources)
-    OpenStruct.new({:status_code => status_code, :linked_resources => linked_resources, :url => url})
+    Magellan::Result.new(status_code,url,url,linked_resources)
   end
 end

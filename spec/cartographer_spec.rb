@@ -87,6 +87,15 @@ describe Magellan::Cartographer do
     cartographer.crawl
   end
 
+  it "should explore relative links" do
+     origin_url = "http://www.google.com"
+     Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(['http://www.google.com/foo.html']))
+     Magellan::Explorer.any_instance.expects(:explore_a).once.with('http://www.google.com/foo.html').returns(create_success_result(['/foo2.html']))
+     Magellan::Explorer.any_instance.expects(:explore_a).once.with('http://www.google.com/foo2.html').returns(create_success_result([]))
+     cartographer = Magellan::Cartographer.new(origin_url,3)
+     cartographer.crawl
+   end
+
   it "should go n layers deep into a site" do
     origin_url = "http://www.google.com"
     Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(['http://www.google.com/foo.html']))
@@ -111,13 +120,6 @@ describe Magellan::Cartographer do
     cartographer.crawl
   end
   
-  it "should not error out on invalid urls" do
-     origin_url = "http://www.google.com/adsfaf"
-     Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(OpenStruct.new({:status_code => "200", :linked_resources => ["this_is_so_not_a_url"], :url => origin_url, :destination_url => origin_url}))
-     cartographer = Magellan::Cartographer.new(origin_url, 5)
-     cartographer.crawl
-   end
-  
   it "should not explore mailto urls" do
     origin_url = "http://www.google.com/adsfaf"
     Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(["mailto:foo"]))
@@ -141,7 +143,7 @@ describe Magellan::Cartographer do
   end
   
   def create_result(status_code, linked_resources)
-    Magellan::Explorer.create_result("http://www.google.com","http://www.google.com",status_code,linked_resources)
+    Magellan::Result.new(status_code,"http://www.google.com","http://www.google.com",linked_resources)
   end
   
 end
