@@ -34,6 +34,12 @@ describe Magellan::ExpectedLinksTracker do
     tracker.has_errors?.should be_true
   end
   
-  it "should fail if a expectation was never met"
+  it "should know if a expectation was never met" do
+    tracker = Magellan::ExpectedLinksTracker.new([[/foo\.html/,'/about_us.html']])
+    tracker.update(Time.now,Magellan::Result.new('200','/zooo','/zoro',['/about_fail_us.html']))
+    tracker.unmet_expecations?.should be_true
+    tracker.update(Time.now,Magellan::Result.new('200','/foo.html','/foo.html',['/about_fail_us.html']))
+    tracker.unmet_expecations?.should be_false
+  end
   
 end

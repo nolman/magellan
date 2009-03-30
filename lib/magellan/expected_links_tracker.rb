@@ -5,6 +5,7 @@ module Magellan
     def initialize(expected_patterns)
       @errors = []
       @expected_patterns = expected_patterns
+      @evaluated_expectations = {}
     end
     
     def update(time,result)
@@ -14,11 +15,17 @@ module Magellan
     end
     
     def patterns_that_apply(result)
-      @expected_patterns.select{|pattern,expecation| result.url =~ pattern || result.destination_url =~ pattern}
+      res = @expected_patterns.select{|pattern,expecation| result.url =~ pattern || result.destination_url =~ pattern}
+      res.each { |expected_pattern| @evaluated_expectations[expected_pattern] = nil }
+      res
     end
 
     def has_errors?
       !@errors.empty?
+    end
+    
+    def unmet_expecations?
+      !(@expected_patterns - @evaluated_expectations.keys).empty?
     end
   end
 end
