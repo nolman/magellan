@@ -48,15 +48,16 @@ describe Magellan::Explorer do
     result.first.destination_url.should eql("http://www.google.com/dfkjaslfkjaslfkj.html")
   end
 
+  it "should be able to explore a url" do
+    Magellan::Explorer.new('').explore_a("http://www.yahoo.com")
+  end
+
   it "should be able to go from http to https" do
     result = Magellan::Explorer.new("http://mail.yahoo.com").explore
     result.first.destination_url.starts_with?("https://").should be_true
   end
   
-  it "should be able to crawl ftp based links" do
-    result = Magellan::Explorer.new("ftp://ftp.software.ibm.com/common/ssi/sa/wh/n/buw03008usen/BUW03008USEN.PDF").explore
-    result.first.status_code.should eql("")
-  end
+  it "should be able to crawl ftp based links"
 
   it "should not remove fragments when converting to absolute urls" do
     results = Magellan::Explorer.create_result("http://www.google.com/index.html","http://www.google.com/index.html","200",["/index.html#foo"])

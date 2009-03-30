@@ -3,7 +3,13 @@ require 'open-uri'
 class String
   def to_absolute_url(origin_url)
     begin
-      URI.join(origin_url,self.strip).to_s
+      #BUG in URI.join?  URI.join('http://www.google.com/index.html?foo=b','?foo=a') # => http://www.google.com/?foo=a
+      stripped = self.strip
+      if stripped.starts_with?('?')
+        origin_url.gsub(/\?.*/,'') + stripped
+      else
+        URI.join(origin_url,stripped).to_s
+      end
     rescue URI::InvalidURIError => the_error
       self
     end

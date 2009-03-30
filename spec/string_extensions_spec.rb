@@ -58,5 +58,10 @@ describe "String Extensions" do
     input = ' http://www.apple.com'
     input.to_absolute_url('http://www.google.com').should eql('http://www.apple.com')
   end
+  
+  it "should correctly join urls that are stricktly query params" do 
+    input = '?foo=bar'
+    input.to_absolute_url('http://www.google.com/index.html?foo=zoro').should eql('http://www.google.com/index.html?foo=bar')
+  end
 
 end

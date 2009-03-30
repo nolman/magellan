@@ -1,6 +1,6 @@
 $:.unshift(File.join(File.dirname(__FILE__), 'lib'))
-require 'magellan'
 require 'config/vendorized_gems'
+require 'magellan'
 require 'spec/rake/spectask'
 require 'magellan/rake/magellan_task'
 
@@ -21,7 +21,7 @@ end
 
 
 Magellan::Rake::BrokenLinksTask.new do |t|
-  t.origin_url = "http://digg.com/token/loader/?rp=%2Fmusic"
+  t.origin_url = "http://www.gap.com"
   t.explore_depth = 4
 end
 
