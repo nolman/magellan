@@ -20,6 +20,6 @@ Spec::Rake::SpecTask.new(:rcov) do |t|
 end
 
 Magellan::Rake::BrokenLinksTask.new do |t|
-  t.origin_url = "http://www.gap.com"
+  t.origin_url = "http://digg.com"
   t.explore_depth = 3
 end
