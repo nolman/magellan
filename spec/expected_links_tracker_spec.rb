@@ -42,4 +42,10 @@ describe Magellan::ExpectedLinksTracker do
     tracker.unmet_expecations?.should be_false
   end
   
+  it "should provide a meaningfull error message around unmet expectations" do
+    tracker = Magellan::ExpectedLinksTracker.new([[/foo\.html/,'/about_us.html']])
+    tracker.update(Time.now,Magellan::Result.new('200','/zooo','/zoro',['/about_fail_us.html']))
+    tracker.unmet_expecations_messages.should include(/foo\.html/.to_s)
+  end
+  
 end

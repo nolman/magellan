@@ -25,7 +25,17 @@ module Magellan
     end
     
     def unmet_expecations?
-      !(@expected_patterns - @evaluated_expectations.keys).empty?
+      !unmet_expecations.empty?
+    end
+    
+    def unmet_expecations_messages
+      message = ""
+      unmet_expecations.each {|pattern,unmet_expecation| message << "#{pattern} was never evaluted during the crawl"}
+      message
+    end
+    
+    def unmet_expecations
+      @expected_patterns - @evaluated_expectations.keys
     end
   end
 end
