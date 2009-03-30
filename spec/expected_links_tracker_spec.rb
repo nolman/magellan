@@ -13,12 +13,26 @@ describe Magellan::ExpectedLinksTracker do
   it "should be able specify all resource should link to something" do
     tracker = Magellan::ExpectedLinksTracker.new([[/.*/,'/about_us.html']])
     tracker.update(Time.now,Magellan::Result.new('200','/zoro','/zoro',['/about_us.html']))
-    tracker.errors.empty?.should be_true
+    tracker.has_errors?.should be_false
     tracker.update(Time.now,Magellan::Result.new('200','/zoro','/zoro',['/about_fail_us.html']))
-    tracker.errors.empty?.should be_false
+    tracker.has_errors?.should be_true
   end
   
-  it "only apply rules if they apply"
+  it "should only apply rules if they apply to source url" do
+    tracker = Magellan::ExpectedLinksTracker.new([[/foo\.html/,'/about_us.html']])
+    tracker.update(Time.now,Magellan::Result.new('200','/zoro','/zoro',['/about_fail_us.html']))
+    tracker.has_errors?.should be_false
+    tracker.update(Time.now,Magellan::Result.new('200','/foo.html','/zoro',['/about_fail_us.html']))
+    tracker.has_errors?.should be_true
+  end
+
+  it "should only apply rules if they apply to destination url" do
+    tracker = Magellan::ExpectedLinksTracker.new([[/foo\.html/,'/about_us.html']])
+    tracker.update(Time.now,Magellan::Result.new('200','/zooo','/zoro',['/about_fail_us.html']))
+    tracker.has_errors?.should be_false
+    tracker.update(Time.now,Magellan::Result.new('200','/zooo','/foo.html',['/about_fail_us.html']))
+    tracker.has_errors?.should be_true
+  end
   
   it "should fail if a expectation was never met"
   

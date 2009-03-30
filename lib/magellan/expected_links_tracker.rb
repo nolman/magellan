@@ -8,10 +8,17 @@ module Magellan
     end
     
     def update(time,result)
-      @expected_patterns.each do |pattern,expectation|
+      patterns_that_apply(result).each do |pattern,expectation|
         @errors << "#{result.url} did not contain a link to #{expectation}" unless result.linked_resources.include?(expectation)
       end
     end
+    
+    def patterns_that_apply(result)
+      @expected_patterns.select{|pattern,expecation| result.url =~ pattern || result.destination_url =~ pattern}
+    end
 
+    def has_errors?
+      !@errors.empty?
+    end
   end
 end
