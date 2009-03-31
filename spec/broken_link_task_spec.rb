@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/spec_helper'
 require 'rake'
 
-describe "Magellan Tasks" do
+describe "Magellan BrokenLinkTask" do
 
   before :all do
     @file_name = File.dirname(__FILE__)  + "/../lib/magellan/rake/broken_link_task.rb"

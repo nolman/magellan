@@ -11,12 +11,16 @@ module Magellan
 
       def initialize(name="magellan:check_links")
         @name = name
+        yield self if block_given?
         define
       end
 
       def define
         task @name do
-          
+          cartographer = Magellan::Cartographer.new(@origin_url,@explore_depth)
+          expected_link_tracker = Magellan::ExpectedLinksTracker.new([])
+          cartographer.add_observer(expected_link_tracker)
+          cartographer.crawl
         end
       end
     end
