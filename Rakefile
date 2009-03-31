@@ -19,7 +19,7 @@ Spec::Rake::SpecTask.new(:rcov) do |t|
   t.rcov_opts << '--exclude spec'
 end
 
-Magellan::Rake::BrokenLinksTask.new do |t|
+Magellan::Rake::BrokenLinkTask.new do |t|
   t.origin_url = "http://digg.com"
   t.explore_depth = 3
 end

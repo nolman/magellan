@@ -10,7 +10,7 @@ module Magellan
     #  t.origin_url = "http://localhost:3000/"
     #  t.explore_depth = 100
     #end
-    class BrokenLinksTask < ::Rake::TaskLib
+    class BrokenLinkTask < ::Rake::TaskLib
       attr_accessor :origin_url
       attr_accessor :explore_depth
 
