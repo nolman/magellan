@@ -17,7 +17,7 @@ describe "Magellan Tasks" do
     Rake.application = nil
   end
 
-  it "should create rake spec tasks for all sites" do
+  it "should create a rake task" do
     Magellan::Rake::BrokenLinkTask.new
     tasks.include?("magellan:explore").should be_true
   end
