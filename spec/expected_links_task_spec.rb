@@ -25,6 +25,7 @@ describe "Magellan ExpectedLinksTask" do
   it "should explore when task is invoked" do
     Magellan::Rake::ExpectedLinksTask.new("some_task") do |t|
       t.explore_depth = 1
+      t.patterns_and_expected_links = []
       t.origin_url = "http://localhost:8080"
     end
     Magellan::Explorer.any_instance.expects(:explore_a).once.with("http://localhost:8080").returns(create_result("http://localhost:8080","200"))
@@ -35,11 +36,23 @@ describe "Magellan ExpectedLinksTask" do
   it "should notify a expected link tracker when a task is invoked" do
     Magellan::Rake::ExpectedLinksTask.new("invoke_expected_link_tracker") do |t|
       t.explore_depth = 1
+      t.patterns_and_expected_links = []
       t.origin_url = "http://localhost:8080"
     end
     Magellan::Explorer.any_instance.stubs(:explore_a).once.with("http://localhost:8080").returns(create_result("http://localhost:8080","200"))
     Magellan::ExpectedLinksTracker.any_instance.expects(:update).once
     @rake.invoke_task("invoke_expected_link_tracker")
+  end
+  
+  it "should fail the rake task if expected links did not exist or rules did not evaluate to be true" do
+    Magellan::Rake::ExpectedLinksTask.new("exception_raising_task") do |t|
+      t.explore_depth = 1
+      t.patterns_and_expected_links = [[/.*/,'/about_us.html']]
+      t.origin_url = "http://canrailsscale.com"
+    end
+    $stderr.expects(:puts)
+    Magellan::Explorer.any_instance.stubs(:explore_a).once.with("http://canrailsscale.com").returns(create_result("http://canrailsscale.com","200"))
+    lambda {@rake.invoke_task("exception_raising_task")}.should raise_error
   end
   
   def create_result(url,status_code)

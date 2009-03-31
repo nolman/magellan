@@ -18,9 +18,13 @@ module Magellan
       def define
         task @name do
           cartographer = Magellan::Cartographer.new(@origin_url,@explore_depth)
-          expected_link_tracker = Magellan::ExpectedLinksTracker.new([])
+          expected_link_tracker = Magellan::ExpectedLinksTracker.new(@patterns_and_expected_links)
           cartographer.add_observer(expected_link_tracker)
           cartographer.crawl
+          if expected_link_tracker.failed?
+            STDERR.puts expected_link_tracker.failure_message
+            raise "#{@name} failed while exploring"
+          end
         end
       end
     end

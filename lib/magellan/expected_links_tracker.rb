@@ -28,9 +28,17 @@ module Magellan
       !unmet_expecations.empty?
     end
     
+    def failed?
+      unmet_expecations? || has_errors?
+    end
+    
+    def failure_message
+      unmet_expecations_messages << errors.join("\n")
+    end
+    
     def unmet_expecations_messages
       message = ""
-      unmet_expecations.each {|pattern,unmet_expecation| message << "#{pattern} was never evaluted during the crawl"}
+      unmet_expecations.each {|pattern,unmet_expecation| message << "#{pattern} was never evaluted during the crawl\n"}
       message
     end
     
