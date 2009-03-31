@@ -4,7 +4,7 @@ require 'rake'
 describe "Magellan Tasks" do
 
   before :all do
-    @file_name = File.dirname(__FILE__)  + "/../lib/magellan/rake/magellan_task.rb"
+    @file_name = File.dirname(__FILE__)  + "/../lib/magellan/rake/broken_link_task.rb"
     @rake = Rake::Application.new
     Rake.application = @rake
   end

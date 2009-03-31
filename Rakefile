@@ -2,7 +2,7 @@ $:.unshift(File.join(File.dirname(__FILE__), 'lib'))
 require 'config/vendorized_gems'
 require 'magellan'
 require 'spec/rake/spectask'
-require 'magellan/rake/magellan_task'
+require 'magellan/rake/broken_link_task'
 
 Spec::Rake::SpecTask.new do |t|
   t.libs << File.join(File.dirname(__FILE__), 'lib')
