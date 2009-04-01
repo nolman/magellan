@@ -10,7 +10,7 @@ class String
       else
         URI.join(origin_url,stripped).to_s
       end
-    rescue URI::InvalidURIError => the_error
+    rescue
       self
     end
   end

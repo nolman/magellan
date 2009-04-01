@@ -50,7 +50,7 @@ module Magellan
     def a_domain_we_care_about?(url)
       begin
         !@domains.select { |domain| URI.parse(url).host == domain.host }.empty?
-      rescue URI::InvalidURIError
+      rescue
         !@domains.select { |domain| url.gsub(/https*:\/\//,'').starts_with?(domain.host) }.empty?
       end
     end

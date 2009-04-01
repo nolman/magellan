@@ -120,6 +120,14 @@ describe Magellan::Cartographer do
     cartographer.crawl
   end
   
+  #<a alex.hal9000@gmail.com="" href="mailto:PWang@thoughtworks.com,">PWang@thoughtworks.com, alex.hal9000@gmail.com</a>
+  
+  it "should not die on checking the domain on invalid urls" do
+    origin_url = "http://www.google.com/adsfaf"
+    cartographer = Magellan::Cartographer.new(origin_url, 5)
+    cartographer.a_domain_we_care_about?("mailto:PWang@thoughtworks.com,").should be_false
+  end
+  
   it "should not explore mailto urls" do
     origin_url = "http://www.google.com/adsfaf"
     Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(["mailto:foo"]))

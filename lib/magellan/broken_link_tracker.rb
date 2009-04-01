@@ -11,7 +11,7 @@ module Magellan
       if result.status_code.starts_with?("5") || result.status_code.starts_with?("4")
         @broken_links << result
       end
-      result.linked_resources.each do |linked_resource|
+      result.absolute_linked_resources.each do |linked_resource|
         @first_linked_from[linked_resource] = result.url if !@first_linked_from.has_key?(linked_resource)
       end
     end
