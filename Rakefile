@@ -23,3 +23,21 @@ Magellan::Rake::BrokenLinkTask.new do |t|
   t.origin_url = "http://digg.com"
   t.explore_depth = 3
 end
+
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |s|
+    s.name = "magellan"
+    s.summary = "A web testing framework that embraces the exploratory nature of the web"
+    s.email = "nolane@gmail.com"
+    s.homepage = "http://github.com/nolman/magellan"
+    s.description = "TODO"
+    s.authors = ["Nolan Evans"]
+    s.rubyforge_project = 'magellan'
+    s.add_dependency 'mechanize'
+    s.add_dependency 'activesupport'
+  end
+rescue LoadError
+  puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
+end
+
