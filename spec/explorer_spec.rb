@@ -7,6 +7,13 @@ describe Magellan::Explorer do
     result = Magellan::Explorer.new(['http://canrailsscale.com/']).explore
     result.first.absolute_linked_resources.should include('http://pagead2.googlesyndication.com/pagead/show_ads.js')
   end
+  
+  it "should foo" do
+    WWW::Mechanize.any_instance.expects(:get).raises(Timeout::Error)
+    result = Magellan::Explorer.new(['http://canrailsscale.com/']).explore
+    result.first.status_code.should eql('505')
+    result.first.url.should eql('http://canrailsscale.com/')
+  end
 
   it "should have one result for one url" do
     result = Magellan::Explorer.new(['http://www.google.com/']).explore

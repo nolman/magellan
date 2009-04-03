@@ -31,6 +31,8 @@ module Magellan
         end
       rescue WWW::Mechanize::ResponseCodeError => the_error
         Explorer.create_result(url, url, the_error.response_code, [])
+      rescue Timeout::Error
+        Explorer.create_result(url, url, "505", [])
       end
     end
 

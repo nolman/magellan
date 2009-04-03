@@ -20,7 +20,7 @@ Spec::Rake::SpecTask.new(:rcov) do |t|
 end
 
 Magellan::Rake::BrokenLinkTask.new do |t|
-  t.origin_url = "http://www.thoughtworks.com"
+  t.origin_url = "http://community.thoughtworks.com/"
   t.explore_depth = 20
 end
 
