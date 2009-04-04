@@ -4,7 +4,7 @@ require 'ostruct'
 
 module Magellan
   class Explorer
-
+    UNKNOWN_CONTENT = "unknown"
     def initialize(urls)
       @urls = urls
     end
@@ -24,20 +24,21 @@ module Magellan
         doc = agent.get(url) 
         destination_url = doc.uri.to_s
         status_code = doc.code
+        #TODO: clean this up, this is very hacky, I would rather pass in a hpricot doc...
         if doc.respond_to?(:content_type) && doc.content_type.starts_with?("text/html")
-          Explorer.create_result(url, destination_url, status_code, doc.links_to_other_documents)
+          Explorer.create_result(url, destination_url, status_code, doc.links_to_other_documents,doc.content_type)
         else
-          Explorer.create_result(url, destination_url, status_code, [])
+          Explorer.create_result(url, destination_url, status_code, [], doc.respond_to?(:content_type) ? doc.content_type : UNKNOWN_CONTENT)
         end
       rescue WWW::Mechanize::ResponseCodeError => the_error
-        Explorer.create_result(url, url, the_error.response_code, [])
+        Explorer.create_result(url, url, the_error.response_code, [],UNKNOWN_CONTENT)
       rescue Timeout::Error
-        Explorer.create_result(url, url, "505", [])
+        Explorer.create_result(url, url, "505", [],UNKNOWN_CONTENT)
       end
     end
 
-    def self.create_result(url,destination_url,status_code,links)
-      Result.new(status_code,url,destination_url,links.map{|link| link.to_s})
+    def self.create_result(url,destination_url,status_code,links,content_type)
+      Result.new(status_code,url,destination_url,links.map{|link| link.to_s},content_type)
     end
   end
 end

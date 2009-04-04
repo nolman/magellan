@@ -56,7 +56,7 @@ describe "Magellan ExpectedLinksTask" do
   end
   
   def create_result(url,status_code)
-    Magellan::Explorer.create_result(url,url,status_code, [])
+    Magellan::Explorer.create_result(url,url,status_code, [],"text/html")
   end
 
   def tasks

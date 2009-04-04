@@ -48,6 +48,6 @@ describe Magellan::BrokenLinkTracker do
   end
   
   def create_result(url,status_code, linked_resources)
-    Magellan::Result.new(status_code,url,url,linked_resources)
+    Magellan::Result.new(status_code,url,url,linked_resources,"foo")
   end
 end

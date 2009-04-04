@@ -3,6 +3,7 @@ require 'config/vendorized_gems'
 require 'magellan'
 require 'spec/rake/spectask'
 require 'magellan/rake/broken_link_task'
+require 'magellan/rake/expected_links_task'
 
 Spec::Rake::SpecTask.new do |t|
   t.libs << File.join(File.dirname(__FILE__), 'lib')
@@ -22,6 +23,12 @@ end
 Magellan::Rake::BrokenLinkTask.new do |t|
   t.origin_url = "http://community.thoughtworks.com/"
   t.explore_depth = 20
+end
+
+Magellan::Rake::ExpectedLinksTask.new("foo") do |t|
+  t.origin_url = "http://www.gap.com/"
+  t.explore_depth = 2
+  t.patterns_and_expected_links = YAML.load_file("foo.yml")
 end
 
 begin
