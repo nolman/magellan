@@ -28,7 +28,6 @@ end
 Magellan::Rake::ExpectedLinksTask.new("foo") do |t|
   t.origin_url = "http://www.gap.com/"
   t.explore_depth = 2
-  t.patterns_and_expected_links = YAML.load_file("foo.yml")
 end
 
 begin
