@@ -34,7 +34,7 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |s|
     s.name = "magellan"
-    s.summary = "A web testing framework that embraces the exploratory nature of the web"
+    s.summary = "A web testing framework that embraces the discoverable nature of the web"
     s.email = "nolane@gmail.com"
     s.homepage = "http://github.com/nolman/magellan"
     s.description = "TODO"
