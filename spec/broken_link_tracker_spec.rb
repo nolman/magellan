@@ -50,4 +50,18 @@ describe Magellan::BrokenLinkTracker do
   def create_result(url,status_code, linked_resources)
     Magellan::Result.new(status_code,url,url,linked_resources,"foo")
   end
+  
+  it "should update the observer with a pass" do
+    tracker = Magellan::BrokenLinkTracker.new
+    tracker.add_observer(Magellan::Logger.new)
+    $stdout.expects(:putc).with('.')
+    tracker.update(Time.now,Magellan::Result.new('200','/zoro','/zoro',['/about_us.html'],"text/html")) 
+  end
+  
+  it "should update the observer with a pass" do
+    tracker = Magellan::BrokenLinkTracker.new
+    tracker.add_observer(Magellan::Logger.new)
+    $stdout.expects(:putc).with('F')
+    tracker.update(Time.now,Magellan::Result.new('404','/zoro','/zoro',['/fail_about_us.html'],"text/html")) 
+  end
 end

@@ -1,5 +1,7 @@
 module Magellan
   class BrokenLinkTracker
+    include Observable
+    
     attr_reader :broken_links
 
     def initialize
@@ -8,9 +10,10 @@ module Magellan
     end
 
     def update(time,result)
-      if result.status_code.starts_with?("5") || result.status_code.starts_with?("4")
-        @broken_links << result
-      end
+      failed = result.status_code.starts_with?("5") || result.status_code.starts_with?("4")
+      @broken_links << result if failed
+      changed
+      notify_observers(Time.now, !failed)
       result.absolute_linked_resources.each do |linked_resource|
         @first_linked_from[linked_resource] = result.url if !@first_linked_from.has_key?(linked_resource)
       end
