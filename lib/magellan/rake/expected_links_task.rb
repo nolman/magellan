@@ -26,7 +26,7 @@ module Magellan
           cartographer.crawl
           if expected_link_tracker.failed?
             STDERR.puts expected_link_tracker.failure_message
-            raise "#{@name} failed while exploring"
+            exit 1
           end
         end
       end

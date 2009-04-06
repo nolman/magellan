@@ -22,7 +22,7 @@ end
 
 Magellan::Rake::BrokenLinkTask.new do |t|
   t.origin_url = "http://community.thoughtworks.com/"
-  t.explore_depth = 20
+  t.explore_depth = 2
 end
 
 Magellan::Rake::ExpectedLinksTask.new("gap") do |t|
@@ -33,11 +33,19 @@ Magellan::Rake::ExpectedLinksTask.new("gap") do |t|
 end
 
 Magellan::Rake::ExpectedLinksTask.new("digg") do |t|
-  t.origin_url = "http://www.digg.com/"
-  t.explore_depth = 2
-  t.patterns_and_expected_links = YAML.load_file("foo.yml")
+  t.origin_url = "http://digg.com/"
+  t.explore_depth = 3
+  t.patterns_and_expected_links = YAML.load_file("digg.yml")
   t.ignored_urls = []
 end
+
+Magellan::Rake::ExpectedLinksTask.new("blurb") do |t|
+  t.origin_url = "http://www.blurb.com/"
+  t.explore_depth = 3
+  t.patterns_and_expected_links = YAML.load_file("digg.yml")
+  t.ignored_urls = []
+end
+
 
 begin
   require 'jeweler'

@@ -21,7 +21,7 @@ module Magellan
       begin
         agent = WWW::Mechanize.new
         agent.user_agent = "Ruby/#{RUBY_VERSION}"
-        doc = agent.get(url) 
+        doc = agent.get(url)
         destination_url = doc.uri.to_s
         status_code = doc.code
         #TODO: clean this up, this is very hacky, I would rather pass in a hpricot doc...
