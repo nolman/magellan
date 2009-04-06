@@ -24,7 +24,7 @@ module Magellan
         doc = agent.get(url)
         destination_url = doc.uri.to_s
         status_code = doc.code
-        #TODO: clean this up, this is very hacky, I would rather pass in a hpricot doc...
+        #TODO: clean this up, this is very hacky, I would rather pass in a hpricot doc to create a result
         if doc.respond_to?(:content_type) && doc.content_type.starts_with?("text/html")
           Explorer.create_result(url, destination_url, status_code, doc.links_to_other_documents,doc.content_type)
         else
