@@ -1,5 +1,6 @@
 module Magellan
   class ExpectedLinksTracker
+    include Observable
     attr_reader :errors
 
     def initialize(expected_patterns)
