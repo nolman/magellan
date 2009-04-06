@@ -116,7 +116,6 @@ describe Magellan::Cartographer do
     Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(["javascript:bookmarksite('ThoughtWorks Studios', 'http://studios.thoughtworks.com')",'http://www.google.com/foo']))
     Magellan::Explorer.any_instance.expects(:explore_a).once.with('http://www.google.com/foo').returns(create_success_result([]))
     cartographer = Magellan::Cartographer.new(origin_url, 5)
-    $stderr.expects(:puts).with {|value| value.include?(origin_url) && value.include?("bookmarksite")}
     cartographer.crawl
   end
   

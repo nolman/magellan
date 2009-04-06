@@ -58,7 +58,8 @@ module Magellan
     def remove_javascript_and_print_warning(result)
       result.linked_resources.delete_if do |linked_resource|
         starts_with_javascript = linked_resource.downcase.starts_with?("javascript:")
-        $stderr.puts "Found obtrusive javascript: #{linked_resource} on page #{result.url}" if starts_with_javascript
+        #TODO: put this in the logger
+        #$stderr.puts "Found obtrusive javascript: #{linked_resource} on page #{result.url}" if starts_with_javascript
         starts_with_javascript
       end
     end

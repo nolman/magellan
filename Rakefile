@@ -34,7 +34,7 @@ end
 
 Magellan::Rake::ExpectedLinksTask.new("digg") do |t|
   t.origin_url = "http://digg.com/"
-  t.explore_depth = 3
+  t.explore_depth = 2
   t.patterns_and_expected_links = YAML.load_file("digg.yml")
   t.ignored_urls = []
 end

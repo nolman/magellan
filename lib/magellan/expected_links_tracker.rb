@@ -43,7 +43,7 @@ module Magellan
     end
 
     def unmet_expecations_messages
-      message = ""
+      message = "\n\n"
       unmet_expecations.each {|pattern,unmet_expecation| message << "#{pattern} was never evaluted during the crawl\n"}
       message
     end

@@ -5,7 +5,9 @@ require 'ostruct'
 module Magellan
   class Explorer
     UNKNOWN_CONTENT = "unknown"
+    LINKS = [["a","href"],["script","src"],["img","src"]]
     def initialize(urls)
+      @links = LINKS
       @urls = urls
     end
 
@@ -26,7 +28,7 @@ module Magellan
         status_code = doc.code
         #TODO: clean this up, this is very hacky, I would rather pass in a hpricot doc to create a result
         if doc.respond_to?(:content_type) && doc.content_type.starts_with?("text/html")
-          Explorer.create_result(url, destination_url, status_code, doc.links_to_other_documents,doc.content_type)
+          Explorer.create_result(url, destination_url, status_code, doc.links_to_other_documents(@links),doc.content_type)
         else
           Explorer.create_result(url, destination_url, status_code, [], doc.respond_to?(:content_type) ? doc.content_type : UNKNOWN_CONTENT)
         end

@@ -24,5 +24,6 @@ module Magellan
       end
       
     end
+    
   end
 end
