@@ -12,7 +12,7 @@ module Magellan
       
       def initialize(name="magellan:check_links")
         @name = name
-        ignored_urls = []
+        @ignored_urls = []
         yield self if block_given?
         define
       end
