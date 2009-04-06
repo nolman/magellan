@@ -12,7 +12,10 @@ module Magellan
     def update(time,result)
       if result.html_content?
         patterns_that_apply(result).each do |pattern,expectation|
-          @errors << "#{result.url} did not contain a link to #{expectation}" unless result.linked_resources.include?(expectation)
+          passed = result.linked_resources.include?(expectation)
+          changed
+          notify_observers(Time.now, passed)
+          @errors << "#{result.url} did not contain a link to #{expectation}" unless passed
         end
       end
     end

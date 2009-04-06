@@ -71,5 +71,17 @@ describe Magellan::ExpectedLinksTracker do
     tracker.failed?.should be_false
   end
 
+  it "should update the observer with a pass" do
+    tracker = Magellan::ExpectedLinksTracker.new([[/.*/,'/about_us.html']])
+    tracker.add_observer(Magellan::Logger.new)
+    $stdout.expects(:putc).with('.')
+    tracker.update(Time.now,Magellan::Result.new('200','/zoro','/zoro',['/about_us.html'],"text/html")) 
+  end
+  it "should update the observer with a pass" do
+    tracker = Magellan::ExpectedLinksTracker.new([[/.*/,'/about_us.html']])
+    tracker.add_observer(Magellan::Logger.new)
+    $stdout.expects(:putc).with('F')
+    tracker.update(Time.now,Magellan::Result.new('200','/zoro','/zoro',['/fail_about_us.html'],"text/html")) 
+  end
 
 end
