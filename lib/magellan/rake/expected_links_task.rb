@@ -9,7 +9,7 @@ module Magellan
       attr_accessor :explore_depth
       attr_accessor :patterns_and_expected_links
       attr_accessor :ignored_urls
-      
+
       def initialize(name="magellan:check_links")
         @name = name
         @ignored_urls = []
@@ -27,6 +27,8 @@ module Magellan
           if expected_link_tracker.failed?
             STDERR.puts expected_link_tracker.failure_message
             exit 1
+          else
+            $stdout.puts "All expected links found!"
           end
         end
       end

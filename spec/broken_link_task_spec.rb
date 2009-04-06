@@ -28,6 +28,7 @@ describe "Magellan BrokenLinkTask" do
       t.origin_url = "http://localhost:8080"
     end
     Magellan::Explorer.any_instance.expects(:explore_a).once.with("http://localhost:8080").returns(create_result("http://localhost:8080","200"))
+    $stdout.expects(:puts) #passed message
     @rake.invoke_task("invoke_task")
   end
 

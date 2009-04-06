@@ -30,6 +30,8 @@ module Magellan
           if broken_link_tracker.has_broken_links?
             STDERR.puts broken_link_tracker.failure_message
             exit 1
+          else
+            $stdout.puts "No broken links were found!"
           end          
         end
 

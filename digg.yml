@@ -1,0 +1,5 @@
+--- 
+- - !ruby/regexp /\//
+  - /register
+- - !ruby/regexp /\//
+  - /about

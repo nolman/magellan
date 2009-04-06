@@ -28,6 +28,7 @@ describe "Magellan ExpectedLinksTask" do
       t.patterns_and_expected_links = []
       t.origin_url = "http://localhost:8080"
     end
+    $stdout.expects(:puts)
     Magellan::Explorer.any_instance.expects(:explore_a).once.with("http://localhost:8080").returns(create_result("http://localhost:8080","200"))
     @rake.invoke_task("some_task")
   end
@@ -39,6 +40,7 @@ describe "Magellan ExpectedLinksTask" do
       t.patterns_and_expected_links = []
       t.origin_url = "http://localhost:8080"
     end
+    $stdout.expects(:puts)
     Magellan::Explorer.any_instance.stubs(:explore_a).once.with("http://localhost:8080").returns(create_result("http://localhost:8080","200"))
     Magellan::ExpectedLinksTracker.any_instance.expects(:update).once
     @rake.invoke_task("invoke_expected_link_tracker")
