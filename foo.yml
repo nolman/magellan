@@ -1,0 +1,9 @@
+--- 
+- - !ruby/regexp /\//
+  - http://www.oldnavy.com
+- - !ruby/regexp /http:\/\/[^\/]*\/\z/
+  - /browse/division.do?cid=5643
+- - !ruby/regexp /http:\/\/[^\/]*\/\z/
+  - /browse/division.do?cid=5063
+- - !ruby/regexp /http:\/\/[^\/]*\/\z/
+  - /browse/division.do?cid=5997

@@ -1,4 +1,3 @@
 artifacts/*
 *.dot
 pkg/*
-foo.yml
