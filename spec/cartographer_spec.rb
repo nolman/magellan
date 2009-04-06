@@ -6,7 +6,7 @@ describe Magellan::Cartographer do
   it "should not visit the same url more then once" do
     origin_url = "http://www.google.com"
     Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(['http://www.google.com']))
-    cartographer = Magellan::Cartographer.new(origin_url)
+    cartographer = Magellan::Cartographer.new(settings(origin_url))
     cartographer.crawl
   end
   
@@ -14,7 +14,7 @@ describe Magellan::Cartographer do
     pending
     origin_url = "http://www.google.com"
     Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(['http://www.google.com/']))
-    cartographer = Magellan::Cartographer.new(origin_url)
+    cartographer = Magellan::Cartographer.new(settings(origin_url))
     cartographer.crawl
   end
   
@@ -22,21 +22,21 @@ describe Magellan::Cartographer do
     origin_url = "http://www.reddit.com"
     Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(["http://www.reddit.com/r/science/comments/87dk7/cold_fusion_is_a_pipe_dream_but_μcatalyzed_cool/","http://www.domainwedontcareabout.com/μ"]))
     Magellan::Explorer.any_instance.expects(:explore_a).once.with("http://www.reddit.com/r/science/comments/87dk7/cold_fusion_is_a_pipe_dream_but_μcatalyzed_cool/").returns(create_success_result([]))
-    cartographer = Magellan::Cartographer.new(origin_url)
+    cartographer = Magellan::Cartographer.new(settings(origin_url))
     cartographer.crawl
   end
   
   it "should not visit the same url more then once if they differ by fragment id" do
     origin_url = "http://www.google.com"
     Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(['http://www.google.com#foo']))
-    cartographer = Magellan::Cartographer.new(origin_url)
+    cartographer = Magellan::Cartographer.new(settings(origin_url))
     cartographer.crawl
   end
   
   it "should notify observers when a result comes in" do
     origin_url = "http://www.google.com"
     Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(['http://www.google.com']))
-    cartographer = Magellan::Cartographer.new(origin_url)
+    cartographer = Magellan::Cartographer.new(settings(origin_url))
     foo = Object.new
     foo.expects(:update)
     cartographer.add_observer(foo)
@@ -48,7 +48,7 @@ describe Magellan::Cartographer do
     Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(['http://www.google.com/foo.html','http://www.google.com/bar.html']))
     Magellan::Explorer.any_instance.expects(:explore_a).with('http://www.google.com/foo.html').returns(create_success_result([]))
     Magellan::Explorer.any_instance.expects(:explore_a).with('http://www.google.com/bar.html').returns(create_success_result([]))
-    cartographer = Magellan::Cartographer.new(origin_url)
+    cartographer = Magellan::Cartographer.new(settings(origin_url))
     foo = Object.new
     foo.expects(:update).times(3)
     cartographer.add_observer(foo)
@@ -59,7 +59,7 @@ describe Magellan::Cartographer do
     origin_url = "http://www.google.com"
     Magellan::Explorer.any_instance.expects(:explore_a).with(origin_url).returns(create_success_result(['http://www.google.com/foo.html']))
     Magellan::Explorer.any_instance.expects(:explore_a).with('http://www.google.com/foo.html').returns(create_success_result([]))
-    cartographer = Magellan::Cartographer.new(origin_url)
+    cartographer = Magellan::Cartographer.new(settings(origin_url))
     cartographer.crawl
   end
   
@@ -67,7 +67,7 @@ describe Magellan::Cartographer do
     origin_url = "http://www.google.com"
     Magellan::Explorer.any_instance.expects(:explore_a).with(origin_url).returns(create_success_result(['http://www.google.com/foo.html','http://www.google.com/ignoreme.html']))
     Magellan::Explorer.any_instance.expects(:explore_a).with('http://www.google.com/foo.html').returns(create_success_result([]))
-    cartographer = Magellan::Cartographer.new(origin_url,3,[origin_url],['http://www.google.com/ignoreme.html'])
+    cartographer = Magellan::Cartographer.new(settings(origin_url,3,[origin_url],['http://www.google.com/ignoreme.html']))
     cartographer.crawl
   end
   
@@ -75,7 +75,7 @@ describe Magellan::Cartographer do
     origin_url = "http://www.google.com"
     Magellan::Explorer.any_instance.expects(:explore_a).with(origin_url).returns(create_success_result(['http://www.google.com/foo.html','http://www.google.com/foo.html']))
     Magellan::Explorer.any_instance.expects(:explore_a).once.with('http://www.google.com/foo.html').returns(create_success_result([]))
-    cartographer = Magellan::Cartographer.new(origin_url)
+    cartographer = Magellan::Cartographer.new(settings(origin_url))
     cartographer.crawl
   end
   
@@ -83,7 +83,7 @@ describe Magellan::Cartographer do
     origin_url = "http://www.google.com"
     Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(['http://www.foo.com']))
     Magellan::Explorer.any_instance.expects(:explore_a).once.with('http://www.foo.com').returns(create_success_result(['http://www.bar.com']))
-    cartographer = Magellan::Cartographer.new(origin_url, 5,['http://www.google.com','http://www.foo.com'])
+    cartographer = Magellan::Cartographer.new(settings(origin_url, 5,['http://www.google.com','http://www.foo.com']))
     cartographer.crawl
   end
 
@@ -92,7 +92,7 @@ describe Magellan::Cartographer do
      Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(['http://www.google.com/foo.html']))
      Magellan::Explorer.any_instance.expects(:explore_a).once.with('http://www.google.com/foo.html').returns(create_success_result(['/foo2.html']))
      Magellan::Explorer.any_instance.expects(:explore_a).once.with('http://www.google.com/foo2.html').returns(create_success_result([]))
-     cartographer = Magellan::Cartographer.new(origin_url,3)
+     cartographer = Magellan::Cartographer.new(settings(origin_url))
      cartographer.crawl
    end
 
@@ -101,13 +101,13 @@ describe Magellan::Cartographer do
     Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(['http://www.google.com/foo.html']))
     Magellan::Explorer.any_instance.expects(:explore_a).once.with('http://www.google.com/foo.html').returns(create_success_result(['http://www.google.com/foo2.html']))
     Magellan::Explorer.any_instance.expects(:explore_a).once.with('http://www.google.com/foo2.html').returns(create_success_result(['http://www.google.com/foo3.html']))
-    cartographer = Magellan::Cartographer.new(origin_url,3)
+    cartographer = Magellan::Cartographer.new(settings(origin_url,3))
     cartographer.crawl
   end
 
   it "should use host to determine if we are in a allowed domain" do
     origin_url = "http://www.google.com/jskfjlsajfd"
-    cartographer = Magellan::Cartographer.new(origin_url)
+    cartographer = Magellan::Cartographer.new(settings(origin_url))
     cartographer.a_domain_we_care_about?("http://www.google.com/index.html").should be_true
   end
   
@@ -115,7 +115,7 @@ describe Magellan::Cartographer do
     origin_url = "http://www.google.com"
     Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(["javascript:bookmarksite('ThoughtWorks Studios', 'http://studios.thoughtworks.com')",'http://www.google.com/foo']))
     Magellan::Explorer.any_instance.expects(:explore_a).once.with('http://www.google.com/foo').returns(create_success_result([]))
-    cartographer = Magellan::Cartographer.new(origin_url, 5)
+    cartographer = Magellan::Cartographer.new(settings(origin_url))
     cartographer.crawl
   end
   
@@ -123,20 +123,20 @@ describe Magellan::Cartographer do
   
   it "should not die on checking the domain on invalid urls" do
     origin_url = "http://www.google.com/adsfaf"
-    cartographer = Magellan::Cartographer.new(origin_url, 5)
+    cartographer = Magellan::Cartographer.new(settings(origin_url))
     cartographer.a_domain_we_care_about?("mailto:PWang@thoughtworks.com,").should be_false
   end
   
   it "should not explore mailto urls" do
     origin_url = "http://www.google.com/adsfaf"
     Magellan::Explorer.any_instance.expects(:explore_a).once.with(origin_url).returns(create_success_result(["mailto:foo"]))
-    cartographer = Magellan::Cartographer.new(origin_url, 5)
+    cartographer = Magellan::Cartographer.new(settings(origin_url))
     cartographer.crawl
   end
   
   it "should record the source and the destination url in known urls" do
     origin_url = "http://studios.thoughtworks.com/cruise"
-    cartographer = Magellan::Cartographer.new(origin_url, 1)
+    cartographer = Magellan::Cartographer.new(settings(origin_url, 1))
     cartographer.crawl
     cartographer.i_have_seen_this_url_before?(origin_url).should be_true
     cartographer.i_have_seen_this_url_before?("http://studios.thoughtworks.com/cruise-continuous-integration").should be_true
@@ -147,6 +147,10 @@ describe Magellan::Cartographer do
   
   def create_success_result(linked_resources)
     create_result("200",linked_resources)
+  end
+  
+  def settings(origin_url,depth=5,domains = [origin_url], ignored_urls=[])
+    {:origin_url => origin_url, :depth_to_explore => depth, :domains => domains, :ignored_urls =>ignored_urls}
   end
   
   def create_result(status_code, linked_resources)

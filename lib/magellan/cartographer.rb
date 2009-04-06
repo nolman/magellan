@@ -5,11 +5,11 @@ module Magellan
   class Cartographer
     include Observable
 
-    def initialize(origin_url, depth_to_explore = 5, domains = [origin_url],ignored_urls=[])
-      @origin_url = origin_url
-      @known_urls = ignored_urls
-      @domains = domains.map {|domain| URI.parse(domain)}
-      @depth_to_explore = depth_to_explore
+    def initialize(settings)
+      @origin_url = settings[:origin_url]
+      @known_urls = settings[:ignored_urls]
+      @domains = settings[:domains].map {|domain| URI.parse(domain)}
+      @depth_to_explore = settings[:depth_to_explore]
     end
 
     def crawl

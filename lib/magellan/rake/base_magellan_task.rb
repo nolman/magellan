@@ -8,6 +8,7 @@ module Magellan
       attr_accessor :ignored_urls
 
       def initialize(name)
+        @ignored_urls = []
         @name=name
         yield self if block_given?
         define
@@ -16,7 +17,8 @@ module Magellan
       def define
         desc description
         task @name do
-          cartographer = Magellan::Cartographer.new(@origin_url,@explore_depth)
+          settings = {:origin_url => origin_url, :depth_to_explore => explore_depth, :domains => [origin_url], :ignored_urls =>ignored_urls}
+          cartographer = Magellan::Cartographer.new(settings)
           observer = create_observer
           observer.add_observer(Magellan::Logger.new)
           cartographer.add_observer(observer)
@@ -25,7 +27,7 @@ module Magellan
             STDERR.puts observer.failure_message
             exit 1
           else
-            $stdout.puts success_message
+            $stdout.puts "\n" + success_message
           end
         end
 
