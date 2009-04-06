@@ -10,6 +10,7 @@ describe "Magellan ExpectedLinksTask" do
   end
 
   before :each do
+    $stdout.stubs(:putc)
     load @file_name
   end
 

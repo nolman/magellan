@@ -6,7 +6,7 @@ describe Magellan::BrokenLinkTracker do
   it "should not report broken links if there are none" do
     broken_link_tracker = Magellan::BrokenLinkTracker.new
     broken_link_tracker.update(Time.now,create_success_result('http://www.foo.com',['jalskdjflakjsf']))
-    broken_link_tracker.has_broken_links?.should be_false
+    broken_link_tracker.failed?.should be_false
   end
 
   it "should record links by absolute_url" do
@@ -20,7 +20,7 @@ describe Magellan::BrokenLinkTracker do
     broken_link_tracker = Magellan::BrokenLinkTracker.new
     broken_link_tracker.update(Time.now,create_success_result('http://www.foo.com',['http://www.google.com']))
     broken_link_tracker.update(Time.now,create_result('http://www.foo.com/404',"404",[]))
-    broken_link_tracker.has_broken_links?.should be_true
+    broken_link_tracker.failed?.should be_true
     broken_link_tracker.broken_links.size.should eql(1)
   end
 

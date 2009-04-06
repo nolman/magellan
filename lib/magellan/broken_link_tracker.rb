@@ -19,7 +19,7 @@ module Magellan
       end
     end
 
-    def has_broken_links?
+    def failed?
       !@broken_links.empty?
     end
 

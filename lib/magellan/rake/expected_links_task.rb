@@ -1,6 +1,7 @@
 require 'rake'
 require 'rake/tasklib'
 require 'magellan'
+require 'magellan/rake/base_magellan_task'
 
 module Magellan
   module Rake
