@@ -150,7 +150,7 @@ describe Magellan::Cartographer do
   end
   
   def settings(origin_url,depth=5,domains = [origin_url], ignored_urls=[])
-    {:origin_url => origin_url, :depth_to_explore => depth, :domains => domains, :ignored_urls =>ignored_urls}
+    {:origin_url => origin_url, :depth_to_explore => depth, :domains => domains, :ignored_urls =>ignored_urls, :links_to_explore => [["a","href"]] }
   end
   
   def create_result(status_code, linked_resources)

@@ -10,6 +10,7 @@ module Magellan
       @known_urls = settings[:ignored_urls]
       @domains = settings[:domains].map {|domain| URI.parse(domain)}
       @depth_to_explore = settings[:depth_to_explore]
+      @links_we_want_to_explore = settings[:links_to_explore]
     end
 
     def crawl
@@ -18,7 +19,7 @@ module Magellan
 
     def recursive_explore(urls,depth)
       if i_am_not_too_deep?(depth)
-        results = Explorer.new(urls).explore
+        results = Explorer.new(urls,@links_we_want_to_explore).explore
         results.each do |result|
           changed
           notify_observers(Time.now, result)

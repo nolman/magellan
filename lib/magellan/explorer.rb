@@ -5,15 +5,15 @@ require 'ostruct'
 module Magellan
   class Explorer
     UNKNOWN_CONTENT = "unknown"
-    LINKS = [["a","href"],["script","src"],["img","src"]]
-    def initialize(urls)
-      @links = LINKS
+    def initialize(urls,links)
+      @links = links
       @urls = urls
     end
 
     def explore
       reqs = []
       @urls.each do |url|
+        puts "exploring #{url}"
         reqs.push Thread.new { explore_a(url) }
       end
       reqs.collect { |req| req.value }

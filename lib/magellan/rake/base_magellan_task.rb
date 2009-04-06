@@ -17,7 +17,7 @@ module Magellan
       def define
         desc description
         task @name do
-          settings = {:origin_url => origin_url, :depth_to_explore => explore_depth, :domains => [origin_url], :ignored_urls =>ignored_urls}
+          settings = {:origin_url => origin_url, :depth_to_explore => explore_depth, :domains => [origin_url], :ignored_urls =>ignored_urls, :links_to_explore => links_to_explore}
           cartographer = Magellan::Cartographer.new(settings)
           observer = create_observer
           observer.add_observer(Magellan::Logger.new)

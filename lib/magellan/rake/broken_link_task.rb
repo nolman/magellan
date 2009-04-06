@@ -15,6 +15,10 @@ module Magellan
         Magellan::BrokenLinkTracker.new
       end
       
+      def links_to_explore
+        [["a","href"],["script","src"],["img","src"]]
+      end
+      
       def description
         "explore #{@origin_url} for broken links"
       end
