@@ -27,7 +27,7 @@ module Magellan
           cartographer.add_observer(observer)
           cartographer.crawl
           if observer.failed?
-            STDERR.puts observer.failure_message
+            STDERR.puts "\n" + observer.failure_message
             exit 1
           else
             $stdout.puts "\n" + success_message
