@@ -54,9 +54,9 @@ describe "Magellan BrokenLinkTask" do
         t.failure_log = log
         t.origin_url = "http://canrailsscale.com"
       end
-      $stdout.stubs(:puts)
-      Magellan::Explorer.any_instance.stubs(:explore_a).once.with("http://canrailsscale.com").returns(create_result("http://canrailsscale.com","200"))
-      @rake.invoke_task("failure_log")
+      $stderr.expects(:puts)
+      Magellan::Explorer.any_instance.stubs(:explore_a).once.with("http://canrailsscale.com").returns(create_result("http://canrailsscale.com","504"))
+      lambda {@rake.invoke_task("failure_log")}.should raise_error
       File.exists?(log).should be_true
     ensure
       FileUtils.rm(log,:force => true)

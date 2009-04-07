@@ -7,9 +7,7 @@ module Magellan
     def update(time,passed,message)
       $stdout.putc(passed ? '.' : 'F')
       $stdout.flush
-      if @file_name
-        File.open(@file_name, 'a') {|f| f.write(message + "\n") }
-      end
+      File.open(@file_name, 'a') {|f| f.write(message + "\n") } if @file_name && !passed
     end
   end
 end
