@@ -28,7 +28,7 @@ end
 Magellan::Rake::ExpectedLinksTask.new("gap") do |t|
   t.origin_url = "http://www.gap.com/"
   t.explore_depth = 2
-  t.patterns_and_expected_links = YAML.load_file("foo.yml")
+  t.patterns_and_expected_links = YAML.load_file("gap.yml")
   t.ignored_urls = ["http://www.gap.com/customerService/info.do?cid=2019"]
 end
 
