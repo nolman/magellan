@@ -59,6 +59,7 @@ begin
     s.rubyforge_project = 'magellan'
     s.add_dependency 'mechanize'
     s.add_dependency 'activesupport'
+    s.rubyforge_project = 'magellan'
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
