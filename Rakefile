@@ -21,8 +21,8 @@ Spec::Rake::SpecTask.new(:rcov) do |t|
 end
 
 Magellan::Rake::BrokenLinkTask.new do |t|
-  t.origin_url = "http://community.thoughtworks.com/"
-  t.explore_depth = 2
+  t.origin_url = "http://digg.com/"
+  t.explore_depth = 3
 end
 
 Magellan::Rake::ExpectedLinksTask.new("gap") do |t|
@@ -36,7 +36,7 @@ Magellan::Rake::ExpectedLinksTask.new("digg") do |t|
   t.origin_url = "http://digg.com/"
   t.explore_depth = 2
   t.patterns_and_expected_links = YAML.load_file("digg.yml")
-  t.ignored_urls = []
+  t.ignored_urls = ["http://digg.com/slices/topTenList/all"]
 end
 
 Magellan::Rake::ExpectedLinksTask.new("blurb") do |t|

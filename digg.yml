@@ -1,5 +1,9 @@
 --- 
-- - !ruby/regexp /\//
+- - !ruby/regexp /.*/
   - /register
-- - !ruby/regexp /\//
+- - !ruby/regexp /.*/
   - /about
+- - !ruby/regexp /http:\/\/[^\/]*\/\z/
+  - /technology
+- - !ruby/regexp /http:\/\/[^\/]*\/\z/
+  - /world_business

@@ -1,5 +1,5 @@
 --- 
-- - !ruby/regexp /\//
+- - !ruby/regexp /.*/
   - http://www.oldnavy.com
 - - !ruby/regexp /http:\/\/[^\/]*\/\z/
   - /browse/division.do?cid=5643
