@@ -11,6 +11,7 @@ module Magellan
       @domains = settings[:domains].map {|domain| URI.parse(domain)}
       @depth_to_explore = settings[:depth_to_explore]
       @links_we_want_to_explore = settings[:links_to_explore]
+      @trace = settings[:trace]
     end
 
     def crawl
@@ -19,6 +20,7 @@ module Magellan
 
     def recursive_explore(urls,depth)
       if i_am_not_too_deep?(depth)
+        $stdout.puts "exploring:\n#{urls.join("\n")}" if @trace
         results = Explorer.new(urls,@links_we_want_to_explore).explore
         results.each do |result|
           changed
@@ -34,7 +36,6 @@ module Magellan
         all_urls.delete_if { |url| !a_domain_we_care_about?(url)}
         all_urls.delete_if { |url| i_have_seen_this_url_before?(url)}
         all_urls.chunk(40).each do |result_chunk|
-          
           recursive_explore(result_chunk,depth+1)
         end
       end

@@ -13,7 +13,6 @@ module Magellan
     def explore
       reqs = []
       @urls.each do |url|
-        puts "exploring #{url}"
         reqs.push Thread.new { explore_a(url) }
       end
       reqs.collect { |req| req.value }

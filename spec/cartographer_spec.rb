@@ -134,6 +134,22 @@ describe Magellan::Cartographer do
     cartographer.crawl
   end
   
+  it "should puts out urls if the trace is enabled" do
+    origin_url = "http://www.google.com/adsfaf"
+    Magellan::Explorer.any_instance.stubs(:explore_a).once.with(origin_url).returns(create_success_result([]))
+    cartographer = Magellan::Cartographer.new(settings(origin_url).merge( {:trace=> true}))
+    $stdout.expects(:puts).with {|value| value.include?(origin_url)}
+    cartographer.crawl
+  end
+  
+  it "should not puts if the trace is disabled" do
+    origin_url = "http://www.google.com/adsfaf"
+    Magellan::Explorer.any_instance.stubs(:explore_a).once.with(origin_url).returns(create_success_result([]))
+    cartographer = Magellan::Cartographer.new(settings(origin_url).merge( {:trace=> false}))
+    $stdout.expects(:puts).never
+    cartographer.crawl
+  end
+   
   it "should record the source and the destination url in known urls" do
     origin_url = "http://studios.thoughtworks.com/cruise"
     cartographer = Magellan::Cartographer.new(settings(origin_url, 1))

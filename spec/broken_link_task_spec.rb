@@ -22,7 +22,7 @@ describe "Magellan BrokenLinkTask" do
     Magellan::Rake::BrokenLinkTask.new
     tasks.include?("magellan:explore").should be_true
   end
-
+  
   it "should explore when task is invoked" do
     Magellan::Rake::BrokenLinkTask.new("invoke_task") do |t|
       t.explore_depth = 1
