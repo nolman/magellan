@@ -8,7 +8,7 @@ module Magellan
       $stdout.putc(passed ? '.' : 'F')
       $stdout.flush
       if @file_name
-        File.open(@file_name, 'a') {|f| f.write(message) }
+        File.open(@file_name, 'a') {|f| f.write(message + "\n") }
       end
     end
   end
