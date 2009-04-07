@@ -11,7 +11,7 @@ describe Magellan::Explorer do
   it "should foo" do
     WWW::Mechanize.any_instance.expects(:get).raises(Timeout::Error)
     result = Magellan::Explorer.new(['http://canrailsscale.com/'],links_to_explore).explore
-    result.first.status_code.should eql('505')
+    result.first.status_code.should eql('504')
     result.first.url.should eql('http://canrailsscale.com/')
   end
 
