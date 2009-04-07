@@ -1,5 +1,6 @@
 require File.dirname(__FILE__) + '/spec_helper'
 require 'rake'
+require 'fileutils'
 
 describe "Magellan BrokenLinkTask" do
 
@@ -22,7 +23,7 @@ describe "Magellan BrokenLinkTask" do
     Magellan::Rake::BrokenLinkTask.new
     tasks.include?("magellan:explore").should be_true
   end
-  
+
   it "should explore when task is invoked" do
     Magellan::Rake::BrokenLinkTask.new("invoke_task") do |t|
       t.explore_depth = 1
@@ -42,17 +43,36 @@ describe "Magellan BrokenLinkTask" do
     Magellan::Explorer.any_instance.stubs(:explore_a).once.with("http://canrailsscale.com").returns(create_result("http://canrailsscale.com","500"))
     lambda {@rake.invoke_task("exception_task")}.should raise_error
   end
-  
+
+  it "should create a log file if one was specified" do
+    begin
+      log = File.dirname(__FILE__) + "/log.txt"
+      FileUtils.rm(log,:force => true)
+      File.exists?(log).should be_false
+      Magellan::Rake::BrokenLinkTask.new("failure_log") do |t|
+        t.explore_depth = 1
+        t.failure_log = log
+        t.origin_url = "http://canrailsscale.com"
+      end
+      $stdout.stubs(:puts)
+      Magellan::Explorer.any_instance.stubs(:explore_a).once.with("http://canrailsscale.com").returns(create_result("http://canrailsscale.com","200"))
+      @rake.invoke_task("failure_log")
+      File.exists?(log).should be_true
+    ensure
+      FileUtils.rm(log,:force => true)
+    end
+  end
+
   it "should attach logger" do
-     Magellan::Rake::BrokenLinkTask.new("logger_test") do |t|
-       t.explore_depth = 1
-       t.origin_url = "http://canrailsscale.com"
-     end
-     $stderr.stubs(:puts)
-     Magellan::Logger.any_instance.expects(:update)
-     Magellan::Explorer.any_instance.stubs(:explore_a).once.with("http://canrailsscale.com").returns(create_result("http://canrailsscale.com","500"))
-     lambda {@rake.invoke_task("logger_test")}.should raise_error
-   end
+    Magellan::Rake::BrokenLinkTask.new("logger_test") do |t|
+      t.explore_depth = 1
+      t.origin_url = "http://canrailsscale.com"
+    end
+    $stderr.stubs(:puts)
+    Magellan::Logger.any_instance.expects(:update)
+    Magellan::Explorer.any_instance.stubs(:explore_a).once.with("http://canrailsscale.com").returns(create_result("http://canrailsscale.com","500"))
+    lambda {@rake.invoke_task("logger_test")}.should raise_error
+  end
 
   def create_result(url,status_code)
     Magellan::Explorer.create_result(url,url,status_code, [],"foo")

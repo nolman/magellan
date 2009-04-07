@@ -22,7 +22,8 @@ end
 
 Magellan::Rake::BrokenLinkTask.new do |t|
   t.origin_url = "http://studios.thoughtworks.com/"
-  t.explore_depth = 3
+  t.explore_depth = 5
+  t.failure_log = "log.txt"
 end
 
 Magellan::Rake::ExpectedLinksTask.new("gap") do |t|

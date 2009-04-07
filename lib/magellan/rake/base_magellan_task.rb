@@ -8,6 +8,7 @@ module Magellan
       attr_accessor :ignored_urls
       attr_accessor :links_to_explore
       attr_accessor :success_message
+      attr_accessor :failure_log
       
       def initialize(name)
         @ignored_urls = []
@@ -23,7 +24,7 @@ module Magellan
                       :ignored_urls =>ignored_urls, :links_to_explore => links_to_explore, :trace => ENV['TRACE']}
           cartographer = Magellan::Cartographer.new(settings)
           observer = create_observer
-          observer.add_observer(Magellan::Logger.new)
+          observer.add_observer(Magellan::Logger.new(failure_log))
           cartographer.add_observer(observer)
           cartographer.crawl
           if observer.failed?
