@@ -6,7 +6,9 @@ module Magellan
       attr_accessor :origin_url
       attr_accessor :explore_depth
       attr_accessor :ignored_urls
-
+      attr_accessor :links_to_explore
+      attr_accessor :success_message
+      
       def initialize(name)
         @ignored_urls = []
         @name=name

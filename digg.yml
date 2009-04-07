@@ -3,7 +3,7 @@
   - /register
 - - !ruby/regexp /.*/
   - /about
-- - !ruby/regexp /http:\/\/[^\/]*\/\z/
+- - !ruby/regexp /.*/
   - /technology
 - - !ruby/regexp /http:\/\/[^\/]*\/\z/
   - /world_business

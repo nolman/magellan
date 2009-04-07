@@ -8,6 +8,8 @@ module Magellan
     
     class BrokenLinkTask < BaseMagellanTask
       def initialize(name="magellan:explore")
+        @links_to_explore = [["a","href"],["script","src"],["img","src"]]
+        @success_message = "No broken links were found!"
         super(name)
       end
       
@@ -15,18 +17,9 @@ module Magellan
         Magellan::BrokenLinkTracker.new
       end
       
-      def links_to_explore
-        [["a","href"],["script","src"],["img","src"]]
-      end
-      
       def description
         "explore #{@origin_url} for broken links"
-      end
-      
-      def success_message
-        "No broken links were found!"
-      end
-      
+      end      
     end
     
   end
