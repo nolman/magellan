@@ -14,8 +14,9 @@ module Magellan
         patterns_that_apply(result).each do |pattern,expectation|
           passed = result.linked_resources.include?(expectation)
           changed
-          notify_observers(Time.now, passed)
-          @errors << "#{result.url} did not contain a link to #{expectation}" unless passed
+          message = "#{result.url} did not contain a link to #{expectation}"
+          notify_observers(Time.now, passed, message)
+          @errors << message unless passed
         end
       end
     end

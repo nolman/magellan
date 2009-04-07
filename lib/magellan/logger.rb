@@ -1,7 +1,7 @@
 module Magellan
   class Logger
-    def update(time,result)
-      $stdout.putc(result ? '.' : 'F')
+    def update(time,passed,message)
+      $stdout.putc(passed ? '.' : 'F')
       $stdout.flush
     end
   end
