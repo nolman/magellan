@@ -27,14 +27,19 @@ describe Magellan::Logger do
     end
   end
 
-  it "should not a log file if one is passed in and the updated passed" do
-    log = File.dirname(__FILE__) + "/log2.txt"
-    FileUtils.rm(log,:force => true)
-    File.exists?(log).should be_false
-    $stdout.stubs(:putc)
-    logger =Magellan::Logger.new(log)
-    logger.update(Time.now,true,'foozor')
-    File.exists?(log).should be_false
+  it "should create a log file but leave it empty if one is passed in and the updated passed" do
+    begin
+      log = File.dirname(__FILE__) + "/log2.txt"
+      FileUtils.rm(log,:force => true)
+      File.exists?(log).should be_false
+      $stdout.stubs(:putc)
+      logger =Magellan::Logger.new(log)
+      logger.update(Time.now,true,'foozor')
+      File.exists?(log).should be_true
+      File.open(log).readlines.size.should eql(0)
+    ensure
+      FileUtils.rm(log,:force => true)
+    end
   end
 
 end
