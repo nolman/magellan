@@ -10,5 +10,9 @@ module Magellan
       $stdout.flush
       File.open(@file_name, 'a') {|f| f.write(message + "\n") } if @file_name && !passed
     end
+    
+    def f
+      
+    end
   end
 end
