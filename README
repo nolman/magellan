@@ -1,11 +1,68 @@
-Magellan: (alpha)
+= magellan
 
-Currently the supported functionality is a rake task that crawl your website and find any broken a[@href], img[@src], or script[@src] links.
+  http://rubyforge.org/projects/magellan/
+  http://github.com/nolman/magellan/tree/master
 
-Magellan::Rake::Task.new do |t|
-  t.origin_url = "http://localhost:3000/"
-  t.explore_depth = 100
+== DESCRIPTION:
+
+Magellan is a web testing tool that embraces the discoverable nature of the web.
+
+== INSTALL:
+
+ $ [sudo] gem install magellan
+
+== GETTING STARTED:
+
+There are two supported rake tasks, the Broken Link Task that will explore a site for any //script[@src] //img[@srg] and //a[@href] that return http status codes of 4** or 5**.
+
+In your Rakefile add:
+
+require 'magellan/rake/broken_link_task'
+
+Magellan::Rake::BrokenLinkTask.new("digg") do |t|
+  t.origin_url = "http://digg.com/"
+  t.explore_depth = 3
 end
 
-Assumptions:
-This tool works best if you follow the rules of unobtrusive javascript and property set the http status code header.
+This will crawl any links within the same domain as the origin_url to a depth of 3.  Treating the origin_url as a depth of 1 that means we will crawl all links that are linked within 2 pages of http://digg.com.
+
+The second rake task is one that will explore your site and ensure that given links exist.  
+
+require 'magellan/rake/expected_links_task'
+
+Magellan::Rake::ExpectedLinksTask.new("gap") do |t|
+  t.origin_url = "http://www.gap.com/"
+  t.explore_depth = 2
+  t.patterns_and_expected_links = [[/.*/,'http://www.oldnavy.com'],
+								[/http:\/\/[^\/]*\/\z/,'/browse/division.do?cid=5643']]
+end
+
+The pattern and expected links is a array of tuples of regex, string.  If the current url matches the regex the task will look for the associated url string in the document.  This task by default only crawls //a[@href]'s.
+
+== ASSUMPTIONS:
+
+This tool works best if you follow the practices of unobtrusive javascript, and properly make use of http status codes.
+
+== DEPENDENCIES:
+
+ * ruby 1.8.6
+ * mechanize[http://mechanize.rubyforge.org/]
+ * activesupport[http://as.rubyonrails.org/]
+
+== SUPPORT:
+
+General help forum is located at:
+
+ * http://rubyforge.org/forum/forum.php?forum_id=31224
+
+Mailing list:
+
+ * http://rubyforge.org/mailman/listinfo/magellan-users
+
+Bug tracker:
+
+ * http://rubyforge.org/tracker/?atid=31199&group_id=8055
+
+== AUTHOR:
+
+ * {Nolan Evans}[http://www.nolanevans.com] (nolane@gmail.com)

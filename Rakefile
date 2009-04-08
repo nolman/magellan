@@ -33,11 +33,9 @@ Magellan::Rake::ExpectedLinksTask.new("gap") do |t|
   t.ignored_urls = ["http://www.gap.com/customerService/info.do?cid=2019"]
 end
 
-Magellan::Rake::ExpectedLinksTask.new("digg") do |t|
+Magellan::Rake::BrokenLinkTask.new("digg") do |t|
   t.origin_url = "http://digg.com/"
-  t.explore_depth = 2
-  t.patterns_and_expected_links = YAML.load_file("digg.yml")
-  t.ignored_urls = ["http://digg.com/slices/topTenList/all"]
+  t.explore_depth = 3
 end
 
 Magellan::Rake::ExpectedLinksTask.new("blurb") do |t|

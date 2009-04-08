@@ -14,10 +14,12 @@ module Magellan
       @trace = settings[:trace]
     end
 
+    # Start recursivily exploring the site at the origin url you specify.
     def crawl
       recursive_explore([@origin_url],1)
     end
 
+    # Recursivily explore a list or urls until you reach a given depth or run out of known urls 
     def recursive_explore(urls,depth)
       if i_am_not_too_deep?(depth)
         $stdout.puts "exploring:\n#{urls.join("\n")}" if @trace

@@ -1,9 +1,10 @@
-
 #TODO: this is not a good place to use a template method - violates Liskov substitution principle
 module Magellan
   module Rake
     class BaseMagellanTask < ::Rake::TaskLib
+      # The url to start the crawl at
       attr_accessor :origin_url
+      # How deep to explore
       attr_accessor :explore_depth
       attr_accessor :ignored_urls
       attr_accessor :links_to_explore
@@ -36,7 +37,6 @@ module Magellan
         end
 
       end
-
 
     end
   end
