@@ -5,14 +5,11 @@ module Magellan
       File.open(@file_name, 'a') {} if @file_name
     end
     
-    def update(time,passed,message) # :foo:
+    def update(time,passed,message)  # :nodoc:
       $stdout.putc(passed ? '.' : 'F')
       $stdout.flush
       File.open(@file_name, 'a') {|f| f.write(message + "\n") } if @file_name && !passed
     end
-    
-    def f
-      
-    end
+
   end
 end
