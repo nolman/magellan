@@ -1,7 +1,7 @@
 module Magellan
   class Result
     attr_reader :status_code,:url,:destination_url,:linked_resources
-    def initialize(status_code,url,destination_url,linked_resources,content_type)
+    def initialize(status_code,url,destination_url,linked_resources,content_type) # :nodoc:
       @status_code = status_code
       @url = url
       @destination_url = destination_url
