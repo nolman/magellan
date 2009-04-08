@@ -17,25 +17,22 @@ There are two supported rake tasks, the Broken Link Task that will explore a sit
 
 In your Rakefile add:
 
-require 'magellan/rake/broken_link_task'
-
-Magellan::Rake::BrokenLinkTask.new("digg") do |t|
-  t.origin_url = "http://digg.com/"
-  t.explore_depth = 3
-end
+  require 'magellan/rake/broken_link_task'
+  Magellan::Rake::BrokenLinkTask.new("digg") do |t|
+    t.origin_url = "http://digg.com/"
+    t.explore_depth = 3
+  end
 
 This will crawl any links within the same domain as the origin_url to a depth of 3.  Treating the origin_url as a depth of 1 that means we will crawl all links that are linked within 2 pages of http://digg.com.
 
 The second rake task is one that will explore your site and ensure that given links exist.  
 
-require 'magellan/rake/expected_links_task'
-
-Magellan::Rake::ExpectedLinksTask.new("gap") do |t|
-  t.origin_url = "http://www.gap.com/"
-  t.explore_depth = 2
-  t.patterns_and_expected_links = [[/.*/,'http://www.oldnavy.com'],
-								[/http:\/\/[^\/]*\/\z/,'/browse/division.do?cid=5643']]
-end
+  require 'magellan/rake/expected_links_task'
+  Magellan::Rake::ExpectedLinksTask.new("gap") do |t|
+    t.origin_url = "http://www.gap.com/"
+    t.explore_depth = 2
+    t.patterns_and_expected_links = [[/.*/,'http://www.oldnavy.com'],[/http:\/\/[^\/]*\/\z/,'/browse/division.do?cid=5643']]
+  end
 
 The pattern and expected links is a array of tuples of regex, string.  If the current url matches the regex the task will look for the associated url string in the document.  This task by default only crawls //a[@href]'s.
 
