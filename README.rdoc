@@ -62,4 +62,6 @@ Bug tracker:
 
 == AUTHOR:
 
- * {Nolan Evans}[http://www.nolanevans.com] (nolane@gmail.com)
+Nolan Evans
+http://www.nolanevans.com 
+nolane at gmail dot com
