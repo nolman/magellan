@@ -9,7 +9,7 @@ module Magellan
       @content_type = content_type
     end
     
-    def absolute_linked_resources
+    def absolute_linked_resources # :nodoc:
       absolute_links = linked_resources.map { |linked_resource| linked_resource.to_s.to_absolute_url(destination_url) }.compact
     end
     
