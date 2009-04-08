@@ -3,14 +3,14 @@ require 'open-uri'
 require 'ostruct'
 
 module Magellan
-  class Explorer
+  class Explorer # :nodoc:
     UNKNOWN_CONTENT = "unknown"
-    def initialize(urls,links)
+    def initialize(urls,links) # :nodoc:
       @links = links
       @urls = urls
     end
 
-    def explore
+    def explore # :nodoc:
       reqs = []
       @urls.each do |url|
         reqs.push Thread.new { explore_a(url) }
@@ -18,7 +18,7 @@ module Magellan
       reqs.collect { |req| req.value }
     end
 
-    def explore_a(url)
+    def explore_a(url) # :nodoc:
       begin
         agent = WWW::Mechanize.new
         agent.user_agent = "Ruby/#{RUBY_VERSION}"
@@ -38,7 +38,7 @@ module Magellan
       end
     end
 
-    def self.create_result(url,destination_url,status_code,links,content_type)
+    def self.create_result(url,destination_url,status_code,links,content_type) # :nodoc:
       Result.new(status_code,url,destination_url,links.map{|link| link.to_s},content_type)
     end
   end
