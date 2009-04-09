@@ -6,7 +6,9 @@ module Magellan
   # every time a new response is received the cartographer updates any observers listening to it
   # to subscribe to the updates:
   # cartographer = Cartographer.new({})
-  # cartographer.add_observer(some_observer_instance)
+  # cartographer.add_observer(some_observer_instance) 
+  #
+  # Your observer instance should implement a update(time,result) method that takes in the current time and a Magellan::Result from the crawl
   class Cartographer
     include Observable
 
