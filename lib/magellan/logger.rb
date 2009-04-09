@@ -1,6 +1,7 @@
-module Magellan
-  class Logger
-    def initialize(file_name=nil)
+module Magellan 
+  class Logger # :nodoc:
+    
+    def initialize(file_name=nil) # :nodoc:
       @file_name = file_name
       File.open(@file_name, 'a') {} if @file_name
     end
