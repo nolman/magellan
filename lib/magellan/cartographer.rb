@@ -2,9 +2,21 @@ require 'activesupport'
 require 'observer'
 
 module Magellan
+  # An instance of the Cartographer class maps a set of domains from a given starting url
+  # every time a new response is received the cartographer updates any observers listening to it
+  # to subscribe to the updates:
+  # cartographer = Cartographer.new({})
+  # cartographer.add_observer(some_observer_instance)
   class Cartographer
     include Observable
 
+    # Create a new Cartographer with a hash of settings:
+    # [:origin_url] - where to start exploring
+    # [:ignored_urls] - an array of absolute urls to not explore
+    # [:domains] - domains we should crawl
+    # [:depth_to_explore] - how deep to explore
+    # [:links_we_want_to_explore] - the kind of resources we will follow ex: //a[@href]
+    # [:trace] - enable a step by step trace
     def initialize(settings)
       @origin_url = settings[:origin_url]
       @known_urls = settings[:ignored_urls]
@@ -19,10 +31,10 @@ module Magellan
       recursive_explore([@origin_url],1)
     end
 
-    # Recursivily explore a list or urls until you reach a given depth or run out of known urls 
+    # Recursivily explore a list or urls until you reach a given depth or run out of known urls
     def recursive_explore(urls,depth)
       if i_am_not_too_deep?(depth)
-        $stdout.puts "exploring:\n#{urls.join("\n")}" if @trace
+        $stdout.puts "\nexploring:\n#{urls.join("\n")}" if @trace
         results = Explorer.new(urls,@links_we_want_to_explore).explore
         results.each do |result|
           changed
@@ -43,14 +55,17 @@ module Magellan
       end
     end
 
-    def i_have_seen_this_url_before?(url)
+    # Has the cartographer seen this url before?
+    def i_have_seen_this_url_before?(url) 
       @known_urls.include?(url.remove_fragment)
     end
-
+    
+    # Should we keep exploring this depth?
     def i_am_not_too_deep?(depth)
       depth <= @depth_to_explore
     end
 
+    # Is a given url in a domain that we care about?
     def a_domain_we_care_about?(url)
       begin
         !@domains.select { |domain| URI.parse(url).host == domain.host }.empty?
@@ -59,13 +74,10 @@ module Magellan
       end
     end
 
+    # Remove the javascript links from the set of links on the page.
     def remove_javascript_and_print_warning(result)
-      result.linked_resources.delete_if do |linked_resource|
-        starts_with_javascript = linked_resource.downcase.starts_with?("javascript:")
-        #TODO: put this in the logger
-        #$stderr.puts "Found obtrusive javascript: #{linked_resource} on page #{result.url}" if starts_with_javascript
-        starts_with_javascript
-      end
+      #TODO: put this in the logger
+      result.linked_resources.delete_if { |linked_resource| linked_resource.downcase.starts_with?("javascript:") }
     end
 
   end
