@@ -38,8 +38,9 @@ The pattern and expected links is a array of tuples of regex, string.  If the cu
 
 == ASSUMPTIONS:
 
-This tool works best if you follow the practices of unobtrusive javascript, and properly make use of http status codes.
+This tool works best if you follow the practices of unobtrusive javascript* and properly make use of http status codes.
 
+* http://www.railsenvy.com/2008/1/3/unobtrusive-javascript 
 == DEPENDENCIES:
 
  * ruby 1.8.6
