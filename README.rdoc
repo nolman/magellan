@@ -36,6 +36,21 @@ The second rake task is one that will explore your site and ensure that given li
 
 The pattern and expected links is a array of tuples of regex, string.  If the current url matches the regex the task will look for the associated url string in the document.  This task by default only crawls //a[@href]'s.
 
+== ADVANCED OPTIONS:
+
+An array of urls to not crawl:
+Example:
+  t.ignored_urls = ["http://www.google.com/foo.html"]
+
+You can override what tags and attributes are crawled by setting the links_to_explore property:
+Example:
+  t.links_to_explore = [['a','href'],['script','src']]
+This will set the crawler to explore all a href's and script src's.
+
+If specified the rake task will create a log that you can tail of all the failures found while the task is running.
+Example:
+  t.failure_log = "log.txt"
+
 == ASSUMPTIONS:
 
 This tool works best if you follow the practices of unobtrusive javascript* and properly make use of http status codes.

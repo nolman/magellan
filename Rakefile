@@ -21,7 +21,7 @@ Spec::Rake::SpecTask.new(:rcov) do |t|
 end
 
 Magellan::Rake::BrokenLinkTask.new do |t|
-  t.origin_url = "http://studios.thoughtworks.com/"
+  t.origin_url = "http://www.blurb.com/"
   t.explore_depth = 5
   t.failure_log = "log.txt"
 end
