@@ -34,7 +34,7 @@ The second rake task is one that will explore your site and ensure that given li
     t.patterns_and_expected_links = [[/.*/,'http://www.oldnavy.com'],[/http:\/\/[^\/]*\/\z/,'/browse/division.do?cid=5643']]
   end
 
-The pattern and expected links is a array of tuples of regex, string.  If the current url matches the regex the task will look for the associated url string in the document.  This task by default only crawls //a[@href]'s.
+The pattern and expected links is a array of tuples of regex, string.  If the current url matches the regex the task will look for the associated url string in the document.  This task by default only crawls //a[@href]'s.  If you are having trouble with regex's in ruby I highly suggest you utilize http://rubular.com/
 
 == ADVANCED OPTIONS:
 
@@ -56,6 +56,7 @@ Example:
 This tool works best if you follow the practices of unobtrusive javascript* and properly make use of http status codes.
 
 * http://www.railsenvy.com/2008/1/3/unobtrusive-javascript 
+
 == DEPENDENCIES:
 
  * ruby 1.8.6
