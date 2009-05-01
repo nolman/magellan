@@ -9,18 +9,22 @@ module Magellan
     attr_reader :destination_url
     # Relative linked resources (based off of the kinds of links you are looking for)
     attr_reader :linked_resources
+    # The document returned by the requested url
+    attr_reader :document
     
     # create a new result, with the status code, url, destination url, linked resources and content type, see attr_readers for more information about these fields
-    def initialize(status_code,url,destination_url,linked_resources,content_type) # :nodoc:
-      @status_code = status_code
-      @url = url
-      @destination_url = destination_url
-      @linked_resources = linked_resources
-      @content_type = content_type
+    def initialize(input)
+      #,status_code,url,destination_url,linked_resources,content_type,document
+      @status_code = input[:status_code]
+      @url = input[:url]
+      @destination_url = input[:destination_url]
+      @linked_resources = input[:linked_resources]
+      @content_type = input[:content_type]
+      @document = input[:document]
     end
     
     # Absolute links to resources
-    def absolute_linked_resources # :nodoc:
+    def absolute_linked_resources
       absolute_links = linked_resources.map { |linked_resource| linked_resource.to_s.to_absolute_url(destination_url) }.compact
     end
     

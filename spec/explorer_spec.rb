@@ -55,6 +55,11 @@ describe Magellan::Explorer do
     result.first.destination_url.should eql("http://www.google.com/dfkjaslfkjaslfkj.html")
   end
 
+  it "should return the document in the result" do
+    result = Magellan::Explorer.new('http://www.google.com/',links_to_explore).explore
+    result.first.document.should be_a(WWW::Mechanize::Page)
+  end
+
   it "should be able to explore a url" do
     Magellan::Explorer.new('',links_to_explore).explore_a("http://www.yahoo.com")
   end

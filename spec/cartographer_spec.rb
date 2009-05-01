@@ -170,7 +170,7 @@ describe Magellan::Cartographer do
   end
   
   def create_result(status_code, linked_resources)
-    Magellan::Result.new(status_code,"http://www.google.com","http://www.google.com",linked_resources,"text/html")
+    Magellan::Result.new({:status_code=> status_code,:destination_url=>"http://www.google.com",:url=>"http://www.google.com",:linked_resources=>linked_resources,:content_type=>"text/html"})
   end
   
 end

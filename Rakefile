@@ -22,7 +22,7 @@ end
 
 Magellan::Rake::BrokenLinkTask.new do |t|
   t.origin_url = "http://www.blurb.com/"
-  t.explore_depth = 5
+  t.explore_depth = 3
   t.failure_log = "log.txt"
 end
 
