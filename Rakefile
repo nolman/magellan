@@ -5,6 +5,8 @@ require 'spec/rake/spectask'
 require 'magellan/rake/broken_link_task'
 require 'magellan/rake/expected_links_task'
 
+task :default => [:spec]
+
 Spec::Rake::SpecTask.new do |t|
   t.libs << File.join(File.dirname(__FILE__), 'lib')
   t.spec_files = 'spec/**/*_spec.rb'
