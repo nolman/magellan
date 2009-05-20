@@ -46,14 +46,18 @@ module Magellan
           remove_javascript_and_print_warning result
         end
 
-        all_urls = results.map {|result| result.absolute_linked_resources }.flatten
-        all_urls.uniq!
-        #TODO: handle any other url parsing error
-        all_urls.delete_if { |url| !a_domain_we_care_about?(url)}
-        all_urls.delete_if { |url| i_have_seen_this_url_before?(url)}
-        all_urls.chunk(40).each do |result_chunk|
-          recursive_explore(result_chunk,depth+1)
-        end
+        determine_unseen_urls_and_explore(results,depth)
+      end
+    end
+    
+    def determine_unseen_urls_and_explore(results,depth)
+      all_urls = results.map {|result| result.absolute_linked_resources }.flatten
+      all_urls.uniq!
+      #TODO: handle any other url parsing error
+      all_urls.delete_if { |url| !a_domain_we_care_about?(url)}
+      all_urls.delete_if { |url| i_have_seen_this_url_before?(url)}
+      all_urls.chunk(40).each do |result_chunk|
+        recursive_explore(result_chunk,depth+1)
       end
     end
 
