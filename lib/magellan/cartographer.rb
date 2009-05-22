@@ -43,11 +43,11 @@ module Magellan
           notify_observers(Time.now, result)
           @known_urls << result.url.remove_fragment
           @known_urls << result.destination_url.remove_fragment
-          remove_javascript_and_print_warning result
+          remove_javascript_links result
         end
         
         all_new_urls = get_all_new_urls(results)
-        all_new_urls.chunk(40).each do |result_chunk|
+        all_new_urls.each_slice(40) do |result_chunk|
           recursive_explore(result_chunk,depth+1)
         end
       end
@@ -82,7 +82,7 @@ module Magellan
     end
 
     # Remove the javascript links from the set of links on the page.
-    def remove_javascript_and_print_warning(result)
+    def remove_javascript_links(result)
       #TODO: put this in the logger
       result.linked_resources.delete_if { |linked_resource| linked_resource.downcase.starts_with?("javascript:") }
     end
